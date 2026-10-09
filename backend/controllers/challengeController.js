@@ -69,5 +69,5 @@ function completeChallenge(req, res) {
 module.exports = {
     getChallenges,
     getChallengeById,
-    completeChallenge,
+    completeChallenge
 };
