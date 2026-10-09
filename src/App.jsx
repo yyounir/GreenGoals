@@ -1,122 +1,273 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
+import Header from './components/Header'
 
-function App() {
-  const [count, setCount] = useState(0)
+const initialChallenges = [
+  { id: 1, category: 'OUTDOORS', title: 'Take the scenic route', description: 'Walk, bike, or roll instead of driving for your next short trip.', points: 120, duration: '20 min', icon: 'sun', color: 'lime' },
+  { id: 2, category: 'AT HOME', title: 'A plant-based plate', description: 'Make one meal today with local, plant-forward ingredients.', points: 90, duration: 'Today', icon: 'leaf', color: 'peach' },
+  { id: 3, category: 'COMMUNITY', title: 'Give it a second life', description: 'Repair, swap, or donate something you no longer use.', points: 150, duration: 'This week', icon: 'heart', color: 'blue' },
+]
+
+const leaderboard = [
+  { rank: 1, name: 'Alex Morgan', handle: '@alexgrows', points: 2480, initials: 'AM', color: 'avatar-lilac' },
+  { rank: 2, name: 'Jamie Chen', handle: '@jamiechen', points: 2210, initials: 'JC', color: 'avatar-peach' },
+  { rank: 3, name: 'You', handle: '@you', points: 1840, initials: 'YO', color: 'avatar-green', you: true },
+  { rank: 4, name: 'Sam Rivera', handle: '@samrivera', points: 1625, initials: 'SR', color: 'avatar-yellow' },
+]
+
+const navItems = [
+  { id: 'overview', label: 'Overview', icon: 'grid' },
+  { id: 'challenges', label: 'Challenges', icon: 'sparkle' },
+  { id: 'leaderboard', label: 'Leaderboard', icon: 'trophy' },
+  { id: 'groups', label: 'My groups', icon: 'users' },
+]
+
+function Icon({ name, size = 20, className = '' }) {
+  const paths = {
+    arrow: <><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></>,
+    arrowUp: <><path d="M7 17 17 7" /><path d="M7 7h10v10" /></>,
+    bell: <><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" /><path d="M10 21h4" /></>,
+    check: <path d="m5 12 4 4L19 6" />,
+    chevron: <path d="m9 18 6-6-6-6" />,
+    clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+    close: <><path d="m18 6-12 12" /><path d="m6 6 12 12" /></>,
+    grid: <><rect x="3" y="3" width="8" height="8" rx="2" /><rect x="13" y="3" width="8" height="5" rx="2" /><rect x="13" y="10" width="8" height="11" rx="2" /><rect x="3" y="13" width="8" height="8" rx="2" /></>,
+    heart: <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" />,
+    leaf: <><path d="M20 4c-8 0-14 3-14 10a6 6 0 0 0 6 6c7 0 10-6 8-16Z" /><path d="M4 20c3-5 7-8 12-10" /></>,
+    logout: <><path d="M10 17l5-5-5-5" /><path d="M15 12H3" /><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" /></>,
+    menu: <><path d="M4 6h16" /><path d="M4 12h16" /><path d="M4 18h16" /></>,
+    plus: <><path d="M12 5v14" /><path d="M5 12h14" /></>,
+    settings: <><circle cx="12" cy="12" r="3" /><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.5.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.8l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.5-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.5.9l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 1.8Z" /></>,
+    sparkle: <><path d="m12 3 1.9 5.8L20 11l-6.1 2.1L12 19l-1.9-5.9L4 11l6.1-2.2L12 3Z" /><path d="m19 14 1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z" /></>,
+    sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></>,
+    trophy: <><path d="M8 21h8" /><path d="M12 17v4" /><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" /><path d="M17 6h4v2a4 4 0 0 1-4 4" /><path d="M7 6H3v2a4 4 0 0 0 4 4" /></>,
+    users: <><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="10" cy="7" r="4" /><path d="M20 21v-2a4 4 0 0 0-3-3.9" /><path d="M16 3.1a4 4 0 0 1 0 7.8" /></>,
+  }
+  return <svg aria-hidden="true" className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{paths[name] || paths.leaf}</svg>
+}
+
+function Brand({ light = false }) {
+  return <a className={`brand${light ? ' brand-light' : ''}`} href="#home" aria-label="GreenGoals home"><span className="brand-mark"><Icon name="leaf" size={20} /></span><span>green<span>goals</span></span></a>
+}
+
+function getGoogleProfile(credential) {
+  const payload = credential.split('.')[1]
+  const normalized = payload.replace(/-/g, '+').replace(/_/g, '/')
+  return JSON.parse(decodeURIComponent(Array.from(atob(normalized), char => `%${char.charCodeAt(0).toString(16).padStart(2, '0')}`).join('')))
+}
+
+function SignInModal({ onClose, onDemo, onGoogleSignIn }) {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+  const [authError, setAuthError] = useState('')
+
+  useEffect(() => {
+    if (!clientId) return undefined
+    let cancelled = false
+    const renderButton = () => {
+      if (cancelled || !window.google?.accounts?.id) return
+      const container = document.getElementById('google-signin-button')
+      if (!container) return
+      container.replaceChildren()
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: response => {
+          try {
+            onGoogleSignIn(getGoogleProfile(response.credential))
+          } catch {
+            setAuthError('Google sign-in returned an invalid response. Please try again.')
+          }
+        },
+      })
+      window.google.accounts.id.renderButton(container, { theme: 'outline', size: 'large', shape: 'pill', text: 'continue_with', width: 336 })
+    }
+    if (window.google?.accounts?.id) {
+      renderButton()
+    } else {
+      const script = document.querySelector('script[data-google-identity]')
+      const onLoad = () => renderButton()
+      const onError = () => setAuthError('Google sign-in could not load. Check your connection and try again.')
+      if (script) {
+        script.addEventListener('load', onLoad)
+        script.addEventListener('error', onError)
+      } else {
+        const googleScript = document.createElement('script')
+        googleScript.src = 'https://accounts.google.com/gsi/client'
+        googleScript.async = true
+        googleScript.defer = true
+        googleScript.dataset.googleIdentity = 'true'
+        googleScript.addEventListener('load', onLoad)
+        googleScript.addEventListener('error', onError)
+        document.head.appendChild(googleScript)
+      }
+    }
+    return () => { cancelled = true }
+  }, [clientId, onGoogleSignIn])
 
   return (
+    <div className="modal-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
+      <section className="signin-modal" role="dialog" aria-modal="true" aria-labelledby="signin-title">
+        <button className="modal-close" type="button" onClick={onClose} aria-label="Close sign in"><Icon name="close" /></button>
+        <span className="modal-mark"><Icon name="leaf" size={24} /></span>
+        <p className="eyebrow">A little good goes a long way</p>
+        <h2 id="signin-title">Let’s grow something good.</h2>
+        <p className="modal-copy">Sign in to save your points, meet your group, and take on your next challenge.</p>
+        {clientId
+          ? <div className="google-button-wrap"><div id="google-signin-button" /></div>
+          : <div className="google-config-note"><strong>Google sign-in setup</strong><span>Add <code>VITE_GOOGLE_CLIENT_ID</code> to your local <code>.env</code> file to enable Google authentication.</span></div>}
+        {authError && <p className="form-error" role="alert">{authError}</p>}
+        <div className="modal-divider"><span>or</span></div>
+        <button className="button button-secondary demo-button" type="button" onClick={onDemo}>Explore the demo <Icon name="arrow" size={18} /></button>
+        <p className="signin-terms">By continuing, you agree to make a positive impact. 🌱</p>
+      </section>
+    </div>
+  )
+}
+
+function LandingPage({ onSignIn }) {
+  return (
+    <main className="landing-page" id="home">
+      <div className="landing-glow landing-glow-one" />
+      <div className="landing-glow landing-glow-two" />
+      <Header onSignIn={onSignIn} />
+      <section className="hero container">
+        <div className="hero-copy">
+          <div className="hero-label"><span className="pulse-dot" /> GOOD HABITS. REAL IMPACT.</div>
+          <h1>Small steps.<br />A <span>greener</span> world.</h1>
+          <p className="hero-description">Turn everyday sustainable choices into a game worth playing. Join your people, take on a challenge, and see how far a little good can go.</p>
+          <div className="hero-actions"><button className="button button-primary" type="button" onClick={onSignIn}>Start your journey <Icon name="arrow" size={18} /></button><a className="text-link" href="#how-it-works">See how it works <span>↓</span></a></div>
+          <div className="hero-social-proof"><div className="avatar-stack"><span className="mini-avatar avatar-peach">J</span><span className="mini-avatar avatar-lilac">A</span><span className="mini-avatar avatar-green">M</span><span className="mini-avatar avatar-blue">S</span></div><div><strong>Growing together</strong><span>Good things are better as a group.</span></div></div>
+        </div>
+        <div className="hero-art" aria-label="GreenGoals challenge preview">
+          <div className="sun-disc" />
+          <div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" />
+          <div className="plant-art"><div className="plant-stem" /><span className="plant-leaf leaf-one" /><span className="plant-leaf leaf-two" /><span className="plant-leaf leaf-three" /><span className="plant-leaf leaf-four" /><div className="plant-pot"><span /></div></div>
+          <div className="floating-badge badge-streak"><span className="badge-emoji">🔥</span><span><b>7 day streak</b><small>You’re on a roll!</small></span></div>
+          <div className="floating-badge badge-points"><span className="points-icon"><Icon name="leaf" size={19} /></span><span><b>+120 points</b><small>One good choice</small></span></div>
+          <div className="art-note"><span className="note-spark">✳</span> YOUR IMPACT, IN BLOOM</div>
+        </div>
+      </section>
+      <section className="impact-strip container" id="community">
+        <div className="impact-intro"><span className="tiny-leaf">✳</span><span>GOOD IS GROWING</span></div>
+        <div className="impact-stat"><strong>2,400<span>+</span></strong><span>good humans</span></div>
+        <div className="impact-stat"><strong>18k</strong><span>challenges completed</span></div>
+        <div className="impact-stat"><strong>42<span>t</span></strong><span>CO₂ saved together</span></div>
+        <div className="impact-note">Every little thing<br />adds up <span>↗</span></div>
+      </section>
+      <section className="how-section container" id="how-it-works">
+        <div className="section-heading"><div><p className="eyebrow">SUSTAINABILITY, MADE SOCIAL</p><h2>Good habits, meet<br />your competitive side.</h2></div><p>Make a difference in a way that feels less like a chore and more like a reason to show up.</p></div>
+        <div className="how-grid">
+          <article className="how-card"><span className="how-icon how-icon-sun"><Icon name="users" /></span><span className="how-number">01 / FIND YOUR PEOPLE</span><h3>Better, together.</h3><p>Join a group of friends, teammates, or fellow planet-lovers. The best motivation is each other.</p></article>
+          <article className="how-card"><span className="how-icon how-icon-sparkle"><Icon name="sparkle" /></span><span className="how-number">02 / TAKE A CHALLENGE</span><h3>Make good a game.</h3><p>Pick bite-sized sustainability challenges made for your life, not a perfect planet.</p></article>
+          <article className="how-card"><span className="how-icon how-icon-leaf"><Icon name="trophy" /></span><span className="how-number">03 / WATCH IT GROW</span><h3>Every point counts.</h3><p>Stack points, celebrate progress, and see your good habits add up together.</p></article>
+        </div>
+      </section>
+      <footer className="landing-footer container"><Brand /><span>Rooted in small things. Growing into big change.</span><span>© 2025 GreenGoals</span></footer>
+    </main>
+  )
+}
+
+function ChallengeCard({ challenge, completed, onComplete }) {
+  return (
+    <article className={`challenge-card${completed ? ' challenge-completed' : ''}`}>
+      <div className={`challenge-icon challenge-icon-${challenge.color}`}><Icon name={challenge.icon} size={23} /></div>
+      <div className="challenge-main"><span className="challenge-category">{challenge.category}</span><h3>{challenge.title}</h3><p>{challenge.description}</p><div className="challenge-meta"><span><Icon name="clock" size={15} /> {challenge.duration}</span><span className="challenge-reward"><Icon name="leaf" size={15} /> {challenge.points} pts</span></div></div>
+      <button className={`challenge-action${completed ? ' completed-button' : ''}`} type="button" onClick={() => onComplete(challenge.id)} aria-label={completed ? `${challenge.title} completed` : `Complete ${challenge.title}`}>{completed ? <><Icon name="check" size={16} /> Done</> : <><span>Take it on</span><Icon name="arrow" size={16} /></>}</button>
+    </article>
+  )
+}
+
+function LeaderboardRows({ full = false, points, profile }) {
+  const rows = leaderboard.map(row => row.you ? { ...row, name: profile?.name || 'You', initials: profile?.name ? profile.name.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase() : 'YO', points } : row)
+  return <div className="leaderboard-rows">{(full ? rows : rows.slice(0, 3)).map(row => <div className={`leaderboard-row${row.you ? ' leaderboard-you' : ''}`} key={row.rank}><span className={`rank-number${row.rank <= 3 ? ' rank-top' : ''}`}>{String(row.rank).padStart(2, '0')}</span><span className={`user-avatar ${row.color}`}>{row.initials}</span><span className="leader-name"><strong>{row.name}</strong><span>{row.handle}</span></span><strong className="leader-points">{row.points.toLocaleString()} <span>pts</span></strong></div>)}</div>
+}
+
+function Dashboard({ profile, isDemo, onSignOut }) {
+  const [activePage, setActivePage] = useState('overview')
+  const [challenges] = useState(initialChallenges)
+  const [completedIds, setCompletedIds] = useState([])
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [groupJoined, setGroupJoined] = useState(false)
+  const points = 1840 + challenges.filter(challenge => completedIds.includes(challenge.id)).reduce((total, challenge) => total + challenge.points, 0)
+  const displayName = profile?.name?.split(' ')[0] || 'Taylor'
+  const fullName = profile?.name || 'Taylor Green'
+  const initials = profile?.name ? profile.name.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase() : 'TG'
+  const photo = profile?.picture
+  const completedCount = completedIds.length
+  const completeChallenge = id => setCompletedIds(current => current.includes(id) ? current : [...current, id])
+
+  const pageTitle = { overview: 'Your little corner of good.', challenges: 'Find your next good thing.', leaderboard: 'Good is better together.', groups: 'Find your kind of people.', profile: 'The good you’re growing.' }[activePage]
+
+  const renderOverview = () => (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <section className="welcome-banner"><div className="welcome-copy"><span className="welcome-kicker">MONDAY, MAY 19 <span>✳</span> YOUR WEEKLY CHECK-IN</span><h2>Hey, {displayName}.<br />Look at you, <em>growing.</em></h2><p>You’re making a difference one small thing at a time. Ready for your next one?</p><button className="button button-primary" type="button" onClick={() => setActivePage('challenges')}>Find a challenge <Icon name="arrow" size={17} /></button></div><div className="welcome-illustration"><div className="welcome-disc" /><div className="welcome-plant"><span className="welcome-stem" /><i className="welcome-leaf wl-one" /><i className="welcome-leaf wl-two" /><i className="welcome-leaf wl-three" /><i className="welcome-leaf wl-four" /><div className="welcome-pot" /></div><span className="welcome-star star-left">✳</span><span className="welcome-star star-right">✺</span><div className="banner-floating"><Icon name="leaf" size={16} /> growing steadily</div></div></section>
+      <section className="stats-grid" aria-label="Your impact so far"><article className="stat-card stat-featured"><div className="stat-card-top"><span className="stat-label">YOUR GREEN POINTS</span><span className="stat-icon"><Icon name="leaf" size={18} /></span></div><strong className="stat-value">{points.toLocaleString()}</strong><div className="stat-foot"><span className="positive-change"><Icon name="arrowUp" size={13} /> +{completedCount ? challenges.filter(challenge => completedIds.includes(challenge.id)).reduce((total, challenge) => total + challenge.points, 0) : 240}</span><span>this week</span><span className="stat-foot-label">Keep it up!</span></div><div className="stat-sparkline"><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></div></article><article className="stat-card"><div className="stat-card-top"><span className="stat-label">YOUR STREAK</span><span className="stat-icon stat-icon-peach">🔥</span></div><strong className="stat-value">7 <small>days</small></strong><p className="stat-caption">A whole week of showing up.</p><div className="week-dots">{['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => <span className={index < 5 ? 'week-day week-done' : 'week-day'} key={`${day}-${index}`}>{index < 5 ? <Icon name="check" size={12} /> : day}</span>)}</div></article><article className="stat-card stat-rank-card"><div className="stat-card-top"><span className="stat-label">GROUP RANK</span><span className="stat-icon stat-icon-yellow"><Icon name="trophy" size={18} /></span></div><strong className="stat-value">#3 <small>of 24</small></strong><p className="stat-caption">You’re in the top 15%. Nice.</p><button type="button" className="stat-inline-link" onClick={() => setActivePage('leaderboard')}>View leaderboard <Icon name="arrow" size={14} /></button></article></section>
+      <div className="dashboard-columns"><section className="content-panel challenges-panel"><div className="panel-heading"><div><p className="eyebrow">A GOOD PLACE TO START</p><h2>Made for your day.</h2></div><button className="view-all" type="button" onClick={() => setActivePage('challenges')}>All challenges <Icon name="arrow" size={15} /></button></div><div className="challenge-list">{challenges.slice(0, 2).map(challenge => <ChallengeCard key={challenge.id} challenge={challenge} completed={completedIds.includes(challenge.id)} onComplete={completeChallenge} />)}</div></section><section className="content-panel leaderboard-panel"><div className="panel-heading"><div><p className="eyebrow">FRIENDLY COMPETITION</p><h2>Your group.</h2></div><button className="icon-button" type="button" aria-label="View full leaderboard" onClick={() => setActivePage('leaderboard')}><Icon name="arrowUp" size={17} /></button></div><div className="group-context"><span className="group-avatar">🌿</span><span><strong>The Sunday Sprouts</strong><small>Week 21 <span>·</span> 24 members</small></span><span className="group-live"><i /> LIVE</span></div><LeaderboardRows points={points} profile={profile} /><button className="leaderboard-footer-link" type="button" onClick={() => setActivePage('leaderboard')}>See the whole leaderboard <Icon name="arrow" size={15} /></button></section></div>
+      <section className="group-banner"><div className="group-banner-icon">🌱</div><div className="group-banner-copy"><span className="eyebrow">GOOD THINGS HAPPEN IN GROUPS</span><h3>Find your people. Grow together.</h3><p>Friends, coworkers, neighbors — there’s a group for your kind of good.</p></div><button className="button button-outline" type="button" onClick={() => setActivePage('groups')}>Explore groups <Icon name="arrow" size={16} /></button></section>
     </>
   )
+
+  const renderChallenges = () => (
+    <section className="content-panel full-panel"><div className="panel-heading"><div><p className="eyebrow">A LITTLE GOOD, EVERY DAY</p><h2>Pick your next challenge.</h2><p className="panel-description">Small actions, real impact. Choose one that feels right for you.</p></div><div className="challenge-counter"><strong>{completedCount}/{challenges.length}</strong><span>completed</span></div></div><div className="challenge-list full-challenge-list">{challenges.map(challenge => <ChallengeCard key={challenge.id} challenge={challenge} completed={completedIds.includes(challenge.id)} onComplete={completeChallenge} />)}</div><div className="ai-note"><span className="ai-note-icon"><Icon name="sparkle" size={19} /></span><span><strong>A little magic behind every mission.</strong><small>Fresh, planet-friendly challenge ideas — made to fit real life.</small></span><span className="ai-pill">GEMINI-INSPIRED</span></div></section>
+  )
+
+  const renderLeaderboard = () => (
+    <div className="dashboard-columns leaderboard-page-grid"><section className="content-panel full-panel"><div className="panel-heading"><div><p className="eyebrow">WEEK 21 · THE SUNDAY SPROUTS</p><h2>The good is adding up.</h2><p className="panel-description">A little friendly competition. A lot of shared impact.</p></div><span className="leaderboard-week-pill">🌿 &nbsp; This week</span></div><div className="leaderboard-summary"><div><span className="eyebrow">GROUP POINTS THIS WEEK</span><strong>18,420</strong><span>points grown together <span className="positive-change">↗ 12%</span></span></div><div className="summary-avatars"><span>🌱</span><span>🌼</span><span>🌻</span><span>🍀</span><small>+20</small></div></div><div className="full-leader-list"><LeaderboardRows full points={points} profile={profile} /></div><button type="button" className="button button-outline invite-button" onClick={() => setActivePage('groups')}><Icon name="plus" size={16} /> Invite a friend to your group</button></section><section className="content-panel your-standing"><span className="standing-icon">🏅</span><p className="eyebrow">YOUR CURRENT STANDING</p><strong>#3</strong><span className="standing-of">out of 24 good humans</span><div className="standing-progress"><span /></div><p>You’re just <b>371 points</b> away from the next spot. A couple more small steps and you’re there!</p><button className="stat-inline-link" type="button" onClick={() => setActivePage('challenges')}>Find your next challenge <Icon name="arrow" size={14} /></button><div className="standing-doodle">✳</div></section></div>
+  )
+
+  const renderGroups = () => (
+    <div className="group-explore"><section className="content-panel groups-featured"><span className="group-featured-emoji">🌻</span><p className="eyebrow">YOUR PEOPLE, YOUR PLANET</p><h2>Find your kind<br />of good.</h2><p>Big change starts with a few people who care. Find your crew, start a friendly challenge, and make good a shared thing.</p><button className="button button-primary" type="button" onClick={() => setGroupJoined(true)}>{groupJoined ? <><Icon name="check" size={17} /> Invite link copied</> : <><Icon name="plus" size={17} /> Start a group</>}</button></section><section className="content-panel"><div className="panel-heading"><div><p className="eyebrow">YOUR CIRCLE</p><h2>The Sunday Sprouts.</h2></div><span className="group-live"><i /> ACTIVE</span></div><div className="group-card-large"><div className="group-avatar-large">🌿</div><h3>The Sunday Sprouts</h3><p>Little changes. Big growing energy.</p><div className="group-member-stack"><span className="mini-avatar avatar-peach">J</span><span className="mini-avatar avatar-lilac">A</span><span className="mini-avatar avatar-green">M</span><span className="mini-avatar avatar-blue">S</span><span className="member-count">+20 good humans</span></div><div className="group-card-stats"><span><strong>18,420</strong> group points</span><span><strong>24</strong> members</span></div><button className="button button-outline" type="button" onClick={() => setActivePage('leaderboard')}>Visit leaderboard <Icon name="arrow" size={15} /></button></div></section></div>
+  )
+
+  const renderProfile = () => (
+    <div className="profile-grid"><section className="content-panel profile-card"><div className="profile-cover"><span className="cover-leaf">✳</span><span className="cover-flower">✿</span></div><div className="profile-identity">{photo ? <img className="profile-avatar" src={photo} alt="" /> : <span className="profile-avatar profile-avatar-fallback">{initials}</span>}<span className="profile-rank">🌱 &nbsp; Growing every day</span><h2>{fullName}</h2><p>{profile?.email || 'A good human making a difference.'}</p><span className="profile-location">🌿 &nbsp; The Sunday Sprouts</span></div><div className="profile-stats"><div><strong>{points.toLocaleString()}</strong><span>green points</span></div><div><strong>7</strong><span>day streak</span></div><div><strong>{completedCount + 12}</strong><span>challenges</span></div></div></section><section className="content-panel profile-impact"><p className="eyebrow">YOUR GOOD, SO FAR</p><h2>Look at all that growing.</h2><p>Every challenge is a small vote for the kind of world you want to live in. Keep going.</p><div className="impact-breakdown"><span><i className="breakdown-dot breakdown-green" /> Everyday choices <strong>{(completedCount + 8).toString().padStart(2, '0')}</strong></span><span><i className="breakdown-dot breakdown-peach" /> Good with your group <strong>04</strong></span><span><i className="breakdown-dot breakdown-blue" /> A little help from nature <strong>03</strong></span></div><button className="button button-outline profile-signout" type="button" onClick={onSignOut}><Icon name="logout" size={16} /> Sign out</button></section></div>
+  )
+
+  const pageContent = { overview: renderOverview, challenges: renderChallenges, leaderboard: renderLeaderboard, groups: renderGroups, profile: renderProfile }[activePage]()
+
+  return (
+    <main className="app-shell">
+      {mobileMenuOpen && <button className="sidebar-dismiss" type="button" aria-label="Close navigation menu" onClick={() => setMobileMenuOpen(false)} />}
+      <aside className={`sidebar${mobileMenuOpen ? ' sidebar-mobile-open' : ''}`}>
+        <div className="sidebar-brand"><Brand /></div>
+        <div className="sidebar-group-label">YOUR LITTLE WORLD</div>
+        <nav className="sidebar-nav" aria-label="Dashboard navigation">{navItems.map(item => <button key={item.id} className={`sidebar-link${activePage === item.id ? ' sidebar-link-active' : ''}`} type="button" onClick={() => { setActivePage(item.id); setMobileMenuOpen(false) }}><Icon name={item.icon} size={19} /><span>{item.label}</span>{item.id === 'challenges' && <span className="nav-count">{challenges.length - completedCount}</span>}</button>)}</nav>
+        <div className="sidebar-group-label group-label-spaced">YOUR GROUP</div>
+        <button className="sidebar-group-card" type="button" onClick={() => { setActivePage('leaderboard'); setMobileMenuOpen(false) }}><span className="sidebar-group-icon">🌿</span><span><strong>The Sunday Sprouts</strong><small>24 little good humans</small></span><Icon name="chevron" size={15} /></button>
+        <div className="sidebar-bottom"><div className="side-tip"><span className="tip-star">✳</span><p>A little good adds up to a lot.</p><small>You’re doing great. Keep going.</small></div><button className="profile-menu" type="button" onClick={() => { setActivePage('profile'); setMobileMenuOpen(false) }}>{photo ? <img className="user-avatar" src={photo} alt="" /> : <span className="user-avatar avatar-green">{initials}</span>}<span><strong>{fullName}</strong><small>{isDemo ? 'Demo account' : 'GreenGoals member'}</small></span><Icon name="settings" size={18} /></button></div>
+      </aside>
+      <section className="dashboard-main">
+        <header className="dashboard-topbar"><button className="mobile-menu-trigger" type="button" aria-label="Open navigation menu" onClick={() => setMobileMenuOpen(true)}><Icon name="menu" /></button><div className="breadcrumb"><span>Your garden</span><Icon name="chevron" size={14} /><strong>{navItems.find(item => item.id === activePage)?.label || 'My profile'}</strong></div><div className="topbar-right">{isDemo && <span className="demo-indicator"><span /> DEMO MODE</span>}<button className="topbar-icon" aria-label="Notifications" type="button"><Icon name="bell" size={19} /><i /></button><span className="topbar-divider" />{photo ? <img className="user-avatar topbar-avatar" src={photo} alt={fullName} /> : <span className="user-avatar avatar-green topbar-avatar">{initials}</span>}</div></header>
+        <div className="dashboard-content"><div className="page-heading"><div><p className="eyebrow">MONDAY, MAY 19, 2025 <span>✳</span> YOUR GARDEN IS GROWING</p><h1>{pageTitle}</h1></div><div className="heading-flourish">✺ <span>✳</span></div></div>{pageContent}<footer className="dashboard-footer"><Brand /><span>One small good thing at a time.</span><span>GROWING TOGETHER <span className="footer-heart">♥</span></span></footer></div>
+      </section>
+    </main>
+  )
+}
+
+function App() {
+  const [profile, setProfile] = useState(null)
+  const [isDemo, setIsDemo] = useState(false)
+  const [isSignInOpen, setIsSignInOpen] = useState(false)
+
+  const handleGoogleSignIn = user => {
+    setProfile(user)
+    setIsDemo(false)
+    setIsSignInOpen(false)
+  }
+
+  const handleDemoSignIn = () => {
+    setProfile({ name: 'Taylor Green', email: 'taylor@example.com' })
+    setIsDemo(true)
+    setIsSignInOpen(false)
+  }
+
+  const handleSignOut = () => {
+    setProfile(null)
+    setIsDemo(false)
+  }
+
+  return profile
+    ? <Dashboard profile={profile} isDemo={isDemo} onSignOut={handleSignOut} />
+    : <><LandingPage onSignIn={() => setIsSignInOpen(true)} />{isSignInOpen && <SignInModal onClose={() => setIsSignInOpen(false)} onDemo={handleDemoSignIn} onGoogleSignIn={handleGoogleSignIn} />}</>
 }
 
 export default App
