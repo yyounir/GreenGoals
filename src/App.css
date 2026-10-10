@@ -64,7 +64,7 @@
 .eyebrow {
     margin: 0;
     color: #73816f;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1.45px;
 }
@@ -157,7 +157,7 @@
 
 .landing-nav a {
     color: #677268;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     transition: color .15s;
 }
@@ -191,7 +191,7 @@
     align-items: center;
     gap: 9px;
     color: #657661;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1.8px;
 }
@@ -251,12 +251,12 @@
 .hero-actions .button {
     min-height: 48px;
     padding-inline: 20px;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .text-link {
     color: #536755;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -286,7 +286,7 @@
     border: 2px solid #f9f9f5;
     border-radius: 50%;
     color: #514b42;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -318,12 +318,12 @@
 
 .hero-social-proof strong {
     color: #405545;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .hero-social-proof>div:last-child>span {
     color: #90978c;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .hero-art {
@@ -502,12 +502,12 @@
 
 .floating-badge b {
     color: #34503a;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .floating-badge small {
     color: #8b9288;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .badge-streak {
@@ -539,7 +539,7 @@
     bottom: 12px;
     right: 7%;
     color: #78856f;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1.25px;
 }
@@ -569,7 +569,7 @@
     align-items: center;
     gap: 9px;
     color: #75816f;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1.5px;
 }
@@ -600,14 +600,14 @@
 
 .impact-stat>span {
     color: #92988d;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .impact-note {
     justify-self: end;
     color: #697965;
     font-family: Georgia, serif;
-    font-size: 12px;
+    font-size: 13px;
     font-style: italic;
     line-height: 1.45;
 }
@@ -646,7 +646,7 @@
     max-width: 345px;
     margin: 0 0 4px;
     color: #7f877b;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.8;
 }
 
@@ -690,7 +690,7 @@
 
 .how-number {
     color: #899287;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1px;
 }
@@ -707,7 +707,7 @@
     max-width: 290px;
     margin: 0;
     color: #828a7f;
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.8;
 }
 
@@ -734,7 +734,7 @@
 
 .landing-footer>span {
     color: #9aa095;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 /* Sign-in dialog */
@@ -800,7 +800,7 @@
     color: #343a34;
     border-color: #d9ded7;
     background: #fff;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .google-signin-button:hover {
@@ -828,7 +828,7 @@
     margin: 0 auto;
     max-width: 315px;
     color: #81877d;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.7;
 }
 
@@ -857,12 +857,12 @@
 
 .google-config-note strong {
     color: #475d42;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .google-config-note span {
     color: #7f8878;
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.6;
 }
 
@@ -870,13 +870,13 @@
     padding: 2px 4px;
     border-radius: 3px;
     background: #edf0e7;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .form-error {
     margin: 9px 0 0;
     color: #a83e35;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .modal-divider {
@@ -885,7 +885,7 @@
     gap: 13px;
     margin: 17px 0;
     color: #a0a69b;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .modal-divider::before,
@@ -899,13 +899,13 @@
 .demo-button {
     width: 100%;
     min-height: 44px;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .signin-terms {
     margin: 17px 0 0;
     color: #9da398;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 @keyframes fade-in {
@@ -974,7 +974,7 @@
 .sidebar-group-label {
     margin: 25px 8px 11px;
     color: #9aa194;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1.25px;
 }
@@ -997,7 +997,7 @@
     color: #788177;
     background: transparent;
     text-align: left;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: background .15s, color .15s;
@@ -1038,7 +1038,7 @@
     border-radius: 50%;
     color: #71835b;
     background: #e5edda;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -1084,14 +1084,14 @@
 .sidebar-group-card strong {
     overflow: hidden;
     color: #52604f;
-    font-size: 9px;
+    font-size: 13px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .sidebar-group-card small {
     color: #9a9f94;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .sidebar-group-card>svg {
@@ -1124,13 +1124,13 @@
     margin: 0 0 4px;
     color: #5a704b;
     font-family: Georgia, serif;
-    font-size: 11px;
+    font-size: 13px;
     font-style: italic;
 }
 
 .side-tip small {
     color: #91988b;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .profile-menu {
@@ -1155,7 +1155,7 @@
     place-items: center;
     border-radius: 50%;
     color: #485d3d;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -1170,14 +1170,14 @@
 .profile-menu strong {
     overflow: hidden;
     color: #4e594c;
-    font-size: 9px;
+    font-size: 13px;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .profile-menu small {
     color: #999f95;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .profile-menu svg {
@@ -1209,7 +1209,7 @@
     align-items: center;
     gap: 8px;
     color: #92988e;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .breadcrumb svg {
@@ -1232,7 +1232,7 @@
     align-items: center;
     gap: 5px;
     color: #868c7f;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: .7px;
 }
@@ -1342,7 +1342,7 @@
 
 .welcome-kicker {
     color: #77886a;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1.2px;
 }
@@ -1371,14 +1371,14 @@
 .welcome-copy>p {
     margin: 0;
     color: #788572;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .welcome-copy .button {
     min-height: 35px;
     margin-top: 14px;
     padding: 0 13px;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .welcome-illustration {
@@ -1513,7 +1513,7 @@
     color: #617850;
     background: rgba(255, 255, 255, .78);
     box-shadow: 0 4px 10px rgba(56, 83, 45, .07);
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .stats-grid {
@@ -1541,7 +1541,7 @@
 
 .stat-label {
     color: #8a9286;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 1px;
 }
@@ -1580,7 +1580,7 @@
 .stat-value small {
     color: #8b9388;
     font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: 0;
 }
@@ -1591,7 +1591,7 @@
     gap: 5px;
     margin-top: 6px;
     color: #969d92;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .positive-change {
@@ -1676,7 +1676,7 @@
 .stat-caption {
     margin: 3px 0 0;
     color: #969d92;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .week-dots {
@@ -1693,7 +1693,7 @@
     border-radius: 50%;
     color: #9a9e92;
     background: #f1f2ed;
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .week-done {
@@ -1710,7 +1710,7 @@
     border: 0;
     color: #667e51;
     background: transparent;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
 }
@@ -1752,7 +1752,7 @@
 }
 
 .panel-heading .eyebrow {
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .view-all,
@@ -1764,7 +1764,7 @@
     border: 0;
     color: #728265;
     background: transparent;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
 }
@@ -1837,7 +1837,7 @@
 
 .challenge-category {
     color: #9aa192;
-    font-size: 7px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: .9px;
 }
@@ -1846,7 +1846,7 @@
     margin: 3px 0 3px;
     color: #435442;
     font-family: Manrope, sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: -.15px;
 }
@@ -1854,7 +1854,7 @@
 .challenge-main>p {
     margin: 0;
     color: #878f83;
-    font-size: 8px;
+    font-size: 13px;
     line-height: 1.55;
 }
 
@@ -1863,7 +1863,7 @@
     gap: 11px;
     margin-top: 8px;
     color: #949b91;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .challenge-meta>span {
@@ -1892,7 +1892,7 @@
     border-radius: 5px;
     color: #698051;
     background: #fff;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
     cursor: pointer;
@@ -1919,7 +1919,7 @@
     align-items: baseline;
     gap: 5px;
     color: #8f978a;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .challenge-counter strong {
@@ -1938,7 +1938,7 @@
 }
 
 .full-challenge-list .challenge-category {
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .full-challenge-list .challenge-main h3 {
@@ -1946,18 +1946,18 @@
 }
 
 .full-challenge-list .challenge-main>p {
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .full-challenge-list .challenge-meta {
     margin-top: 10px;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .full-challenge-list .challenge-action {
     min-height: 33px;
     padding-inline: 11px;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .group-context {
@@ -1988,12 +1988,12 @@
 
 .group-context strong {
     color: #52604d;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .group-context small {
     color: #939a8d;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .group-context small span {
@@ -2005,7 +2005,7 @@
     align-items: center;
     gap: 5px;
     color: #8d9984;
-    font-size: 7px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: .8px;
 }
@@ -2030,7 +2030,7 @@
 .rank-number {
     width: 19px;
     color: #a0a69b;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 700;
 }
 
@@ -2041,7 +2041,7 @@
 .leaderboard-row .user-avatar {
     width: 26px;
     height: 26px;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .leader-name {
@@ -2054,23 +2054,23 @@
 
 .leader-name strong {
     color: #535f51;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 600;
 }
 
 .leader-name>span {
     color: #a0a69c;
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .leader-points {
     color: #657d50;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .leader-points span {
     color: #a0a699;
-    font-size: 7px;
+    font-size: 13px;
     font-weight: 500;
 }
 
@@ -2084,7 +2084,7 @@
 
 .leaderboard-footer-link {
     margin-top: 11px;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .group-banner {
@@ -2115,26 +2115,26 @@
 }
 
 .group-banner-copy .eyebrow {
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .group-banner-copy h3 {
     margin: 4px 0 3px;
     color: #496043;
     font-family: Manrope, sans-serif;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .group-banner-copy p {
     margin: 0;
     color: #91978b;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .group-banner .button {
     min-height: 32px;
     padding-inline: 10px;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .dashboard-footer {
@@ -2162,11 +2162,11 @@
 
 .dashboard-footer>span {
     color: #a0a69a;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .dashboard-footer>span:last-child {
-    font-size: 7px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: .85px;
 }
@@ -2190,7 +2190,7 @@
 .panel-description {
     margin: 6px 0 0;
     color: #92998d;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .ai-note {
@@ -2223,12 +2223,12 @@
 
 .ai-note strong {
     color: #5a6d4c;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .ai-note small {
     color: #969d91;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .ai-pill {
@@ -2236,7 +2236,7 @@
     border: 1px solid #e3ead8;
     border-radius: 20px;
     color: #7a9061;
-    font-size: 7px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: .55px;
 }
@@ -2248,7 +2248,7 @@
     border-radius: 6px;
     color: #944b3d;
     background: #fff7f3;
-    font-size: 10px;
+    font-size: 13px;
     line-height: 1.6;
 }
 
@@ -2262,7 +2262,7 @@
 }
 
 .loading-state p {
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .loading-sprout {
@@ -2273,7 +2273,7 @@
 .refresh-challenges {
     min-height: 29px;
     padding: 0 8px;
-    font-size: 8px;
+    font-size: 13px;
     white-space: nowrap;
 }
 
@@ -2290,7 +2290,7 @@
 
 .group-form label {
     color: #697763;
-    font-size: 9px;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -2302,7 +2302,7 @@
     border-radius: 6px;
     color: #465842;
     background: #fcfdf9;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .group-form input:focus {
@@ -2319,7 +2319,7 @@
 .group-form-actions .button {
     min-height: 34px;
     padding-inline: 10px;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .group-form-actions .button:disabled {
@@ -2336,7 +2336,7 @@
     color: #465842;
     background: #fcfdf9;
     font: inherit;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .group-form select:focus {
@@ -2376,7 +2376,7 @@
     border-radius: 5px;
     color: #748664;
     background: #f3f6ec;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -2398,7 +2398,7 @@
 }
 
 .leaderboard-summary .eyebrow {
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .leaderboard-summary strong {
@@ -2409,7 +2409,7 @@
 
 .leaderboard-summary>div:first-child>span:last-child {
     color: #8c9588;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .summary-avatars {
@@ -2433,7 +2433,7 @@
 .summary-avatars small {
     padding-left: 5px;
     color: #90988d;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .full-leader-list .leaderboard-row {
@@ -2443,31 +2443,31 @@
 
 .full-leader-list .rank-number {
     width: 22px;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .full-leader-list .leaderboard-row .user-avatar {
     width: 31px;
     height: 31px;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .full-leader-list .leader-name strong {
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .full-leader-list .leader-name>span {
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .full-leader-list .leader-points {
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .invite-button {
     min-height: 35px;
     margin-top: 13px;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .your-standing {
@@ -2490,7 +2490,7 @@
 }
 
 .your-standing .eyebrow {
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .your-standing>strong {
@@ -2506,7 +2506,7 @@
     display: block;
     margin-top: -1px;
     color: #8e9788;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .standing-progress {
@@ -2529,7 +2529,7 @@
     position: relative;
     z-index: 1;
     color: #818c7c;
-    font-size: 9px;
+    font-size: 13px;
     line-height: 1.7;
 }
 
@@ -2575,7 +2575,7 @@
 }
 
 .groups-featured .eyebrow {
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .groups-featured h2 {
@@ -2592,7 +2592,7 @@
     max-width: 230px;
     margin: 0;
     color: #869080;
-    font-size: 9px;
+    font-size: 13px;
     line-height: 1.8;
 }
 
@@ -2600,7 +2600,7 @@
     margin-top: 17px;
     min-height: 35px;
     padding-inline: 12px;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .group-card-large {
@@ -2629,7 +2629,7 @@
 .group-card-large>p {
     margin: 0;
     color: #949c90;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .group-member-stack {
@@ -2642,13 +2642,13 @@
 .group-member-stack .mini-avatar {
     width: 25px;
     height: 25px;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .member-count {
     margin-left: 6px;
     color: #858e81;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .group-card-stats {
@@ -2660,7 +2660,7 @@
     border-top: 1px solid #eef0ea;
     border-bottom: 1px solid #eef0ea;
     color: #969d92;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .group-card-stats span {
@@ -2671,13 +2671,13 @@
 
 .group-card-stats strong {
     color: #59714b;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .group-card-large .button {
     min-height: 33px;
     padding-inline: 12px;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .group-card-large+.group-live {
@@ -2771,7 +2771,7 @@
     border-radius: 20px;
     color: #768962;
     background: #f0f4e9;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .profile-identity h2 {
@@ -2784,14 +2784,14 @@
 .profile-identity p {
     margin: 0;
     color: #929a8e;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .profile-location {
     display: block;
     margin-top: 12px;
     color: #85907e;
-    font-size: 8px;
+    font-size: 13px;
 }
 
 .profile-stats {
@@ -2822,7 +2822,7 @@
 
 .profile-stats span {
     color: #969d92;
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .profile-impact {
@@ -2830,7 +2830,7 @@
 }
 
 .profile-impact .eyebrow {
-    font-size: 7px;
+    font-size: 13px;
 }
 
 .profile-impact h2 {
@@ -2845,7 +2845,7 @@
     max-width: 300px;
     margin: 0;
     color: #8b9387;
-    font-size: 9px;
+    font-size: 13px;
     line-height: 1.8;
 }
 
@@ -2861,7 +2861,7 @@
     display: flex;
     align-items: center;
     color: #858d81;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .breakdown-dot {
@@ -2886,14 +2886,14 @@
 .impact-breakdown strong {
     margin-left: auto;
     color: #667950;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .profile-signout {
     min-height: 34px;
     margin-top: 21px;
     padding-inline: 11px;
-    font-size: 9px;
+    font-size: 13px;
 }
 
 .sidebar-dismiss {
@@ -3041,7 +3041,7 @@
 
     .site-header .landing-nav a {
         padding: 11px 9px;
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .header-sign-in {
@@ -3117,7 +3117,7 @@
     }
 
     .impact-stat>span {
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .impact-note {
@@ -3245,7 +3245,7 @@
 
     .welcome-copy>p {
         max-width: 260px;
-        font-size: 9px;
+        font-size: 13px;
         line-height: 1.6;
     }
 
@@ -3283,7 +3283,7 @@
     }
 
     .stat-label {
-        font-size: 7px;
+        font-size: 13px;
     }
 
     .stat-value {
@@ -3291,7 +3291,7 @@
     }
 
     .stat-caption {
-        font-size: 7px;
+        font-size: 13px;
         line-height: 1.45;
     }
 
@@ -3327,11 +3327,11 @@
     }
 
     .group-banner-copy h3 {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .group-banner-copy p {
-        font-size: 7px;
+        font-size: 13px;
     }
 
     .group-banner .button {
@@ -3388,7 +3388,7 @@
     .header-sign-in {
         min-height: 35px;
         padding-inline: 11px;
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .hero {
@@ -3405,7 +3405,7 @@
     }
 
     .hero-description {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .hero-actions {
@@ -3416,11 +3416,11 @@
     .hero-actions .button {
         min-height: 44px;
         padding-inline: 13px;
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .text-link {
-        font-size: 9px;
+        font-size: 13px;
     }
 
     .hero-art {
@@ -3442,7 +3442,7 @@
     }
 
     .impact-stat>span {
-        font-size: 7px;
+        font-size: 13px;
     }
 
     .how-section {
@@ -3458,7 +3458,7 @@
     }
 
     .landing-footer>span:last-child {
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .dashboard-content {
@@ -3471,11 +3471,11 @@
 
     .breadcrumb {
         gap: 5px;
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .demo-indicator {
-        font-size: 6px;
+        font-size: 13px;
     }
 
     .topbar-right {
@@ -3496,7 +3496,7 @@
     }
 
     .page-heading .eyebrow {
-        font-size: 7px;
+        font-size: 13px;
         letter-spacing: .9px;
     }
 
@@ -3523,11 +3523,11 @@
 
     .welcome-copy>p {
         max-width: 215px;
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .welcome-kicker {
-        font-size: 6px;
+        font-size: 13px;
         letter-spacing: .65px;
     }
 
@@ -3548,7 +3548,7 @@
 
     .welcome-copy .button {
         min-height: 32px;
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .stats-grid {
@@ -3604,12 +3604,12 @@
     }
 
     .panel-heading .eyebrow {
-        font-size: 6px;
+        font-size: 13px;
         letter-spacing: 1px;
     }
 
     .view-all {
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .challenge-card {
@@ -3635,11 +3635,11 @@
     }
 
     .challenge-main h3 {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .challenge-main>p {
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .challenge-meta {
@@ -3659,7 +3659,7 @@
     }
 
     .dashboard-footer .brand {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .dashboard-footer .brand-mark {
@@ -3834,7 +3834,7 @@
     .account-popover-profile small {
         overflow: hidden;
         color: #7e887b;
-        font-size: 12px;
+        font-size: 13px;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
@@ -3871,7 +3871,7 @@
 
     .account-points-label small {
         color: #74846b;
-        font-size: 9px;
+        font-size: 13px;
         font-weight: 700;
         letter-spacing: .8px;
     }
@@ -3891,7 +3891,7 @@
 
     .account-points-total span {
         color: #70806a;
-        font-size: 11px;
+        font-size: 13px;
         font-weight: 600;
     }
 
@@ -3942,7 +3942,7 @@
     .app-shell .group-form label,
     .app-shell .stat-label,
     .app-shell .challenge-category {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .sidebar-link {
@@ -3951,48 +3951,48 @@
 
     .app-shell .sidebar-group-card strong,
     .app-shell .profile-menu strong {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .app-shell .sidebar-group-card small,
     .app-shell .profile-menu small,
     .app-shell .side-tip small {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .side-tip p {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .app-shell .breadcrumb {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .app-shell .demo-indicator {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .welcome-kicker {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .welcome-copy > p {
-        font-size: 12px;
+        font-size: 13px;
         line-height: 1.65;
     }
 
     .app-shell .welcome-copy .button,
     .app-shell .stat-inline-link {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .app-shell .stat-foot,
     .app-shell .stat-caption {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .week-day {
-        font-size: 9px;
+        font-size: 13px;
     }
 
     .app-shell .challenge-main h3 {
@@ -4002,33 +4002,33 @@
     .app-shell .challenge-main > p,
     .app-shell .challenge-meta,
     .app-shell .challenge-action {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .group-context strong,
     .app-shell .leader-name strong {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .app-shell .group-context small,
     .app-shell .leader-name > span,
     .app-shell .leader-points span {
-        font-size: 9px;
+        font-size: 13px;
     }
 
     .app-shell .leader-points,
     .app-shell .rank-number {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .app-shell .view-all,
     .app-shell .leaderboard-footer-link,
     .app-shell .group-live {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .group-banner-copy .eyebrow {
-        font-size: 9px;
+        font-size: 13px;
     }
 
     .app-shell .group-banner-copy h3 {
@@ -4037,22 +4037,22 @@
 
     .app-shell .group-banner-copy p,
     .app-shell .dashboard-footer > span {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .dashboard-footer > span:last-child {
-        font-size: 9px;
+        font-size: 13px;
     }
 
     .app-shell .panel-description,
     .app-shell .ai-note small,
     .app-shell .group-form select,
     .app-shell .group-form input {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .app-shell .ai-note strong {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .app-shell .ai-pill,
@@ -4066,37 +4066,37 @@
     .app-shell .invite-button,
     .app-shell .your-standing > p:not(.eyebrow),
     .app-shell .your-standing .stat-inline-link {
-        font-size: 11px;
+        font-size: 13px;
     }
 
     .app-shell .leaderboard-summary > div:first-child > span:last-child,
     .app-shell .summary-avatars small,
     .app-shell .full-leader-list .leader-name > span,
     .app-shell .full-leader-list .rank-number {
-        font-size: 10px;
+        font-size: 13px;
     }
 
     .app-shell .full-leader-list .leader-name strong,
     .app-shell .full-leader-list .leader-points {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .app-shell .group-card-stats strong,
     .app-shell .impact-breakdown strong {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     @media (max-width: 480px) {
         .app-shell .page-heading .eyebrow {
-            font-size: 9px;
+            font-size: 13px;
         }
 
         .app-shell .welcome-kicker {
-            font-size: 8px;
+            font-size: 13px;
         }
 
     .app-shell .welcome-copy > p {
-        font-size: 11px;
+        font-size: 13px;
     }
 }
 
