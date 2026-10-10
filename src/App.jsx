@@ -48,8 +48,13 @@ function Icon({ name, size = 20, className = '' }) {
   return <svg aria-hidden="true" className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{paths[name] || paths.leaf}</svg>
 }
 
-function Brand({ light = false }) {
-  return <a className={`brand${light ? ' brand-light' : ''}`} href="#home" aria-label="GreenGoals home"><span className="brand-mark"><Icon name="leaf" size={20} /></span><span>green<span>goals</span></span></a>
+function Brand({ light = false, onClick }) {
+  return <a className={`brand${light ? ' brand-light' : ''}`} href="#home" aria-label="GreenGoals home" onClick={event => {
+    if (onClick) {
+      event.preventDefault()
+      onClick()
+    }
+  }}><span className="brand-mark"><Icon name="leaf" size={20} /></span><span>green<span>goals</span></span></a>
 }
 
 function GoogleMark() {
@@ -152,6 +157,8 @@ function LoadingState({ busy, onRetry }) {
 function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
   const [activePage, setActivePage] = useState('overview')
   const [todayLabel] = useState(() => new Intl.DateTimeFormat('en', { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date()).toUpperCase())
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false)
+  const accountMenuRef = useRef(null)
   const localChallenges = initialChallenges
   const [completedIds, setCompletedIds] = useState([])
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -241,6 +248,22 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
 
   const pageTitle = { overview: 'Your little corner of good.', challenges: 'Find your next good thing.', leaderboard: 'Good is better together.', groups: 'Find your kind of people.', profile: 'The good you’re growing.' }[activePage]
 
+  useEffect(() => {
+    if (!accountMenuOpen) return undefined
+    const closeOnOutsideClick = event => {
+      if (!accountMenuRef.current?.contains(event.target)) setAccountMenuOpen(false)
+    }
+    const closeOnEscape = event => {
+      if (event.key === 'Escape') setAccountMenuOpen(false)
+    }
+    document.addEventListener('pointerdown', closeOnOutsideClick)
+    document.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsideClick)
+      document.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [accountMenuOpen])
+
   const renderOverview = () => (
     <>
       <section className="welcome-banner"><div className="welcome-copy"><span className="welcome-kicker">MONDAY, MAY 19 <span>✳</span> YOUR WEEKLY CHECK-IN</span><h2>Hey, {displayName}.<br />Look at you, <em>growing.</em></h2><p>You’re making a difference one small thing at a time. Ready for your next one?</p><button className="button button-primary" type="button" onClick={() => setActivePage('challenges')}>Find a challenge <Icon name="arrow" size={17} /></button></div><div className="welcome-illustration"><div className="welcome-disc" /><div className="welcome-plant"><span className="welcome-stem" /><i className="welcome-leaf wl-one" /><i className="welcome-leaf wl-two" /><i className="welcome-leaf wl-three" /><i className="welcome-leaf wl-four" /><div className="welcome-pot" /></div><span className="welcome-star star-left">✳</span><span className="welcome-star star-right">✺</span><div className="banner-floating"><Icon name="leaf" size={16} /> growing steadily</div></div></section>
@@ -272,7 +295,7 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
     <main className="app-shell">
       {mobileMenuOpen && <button className="sidebar-dismiss" type="button" aria-label="Close navigation menu" onClick={() => setMobileMenuOpen(false)} />}
       <aside className={`sidebar${mobileMenuOpen ? ' sidebar-mobile-open' : ''}`}>
-        <div className="sidebar-brand"><Brand /></div>
+        <div className="sidebar-brand"><Brand onClick={() => { setActivePage('overview'); setMobileMenuOpen(false) }} /></div>
         <div className="sidebar-group-label">YOUR LITTLE WORLD</div>
         <nav className="sidebar-nav" aria-label="Dashboard navigation">{navItems.map(item => <button key={item.id} className={`sidebar-link${activePage === item.id ? ' sidebar-link-active' : ''}`} type="button" onClick={() => { setActivePage(item.id); setMobileMenuOpen(false) }}><Icon name={item.icon} size={19} /><span>{item.label}</span>{item.id === 'challenges' && <span className="nav-count">{challenges.length - completedCount}</span>}</button>)}</nav>
         <div className="sidebar-group-label group-label-spaced">YOUR GROUP</div>
@@ -280,8 +303,8 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
         <div className="sidebar-bottom"><div className="side-tip"><span className="tip-star">✳</span><p>A little good adds up to a lot.</p><small>You’re doing great. Keep going.</small></div><button className="profile-menu" type="button" onClick={() => { setActivePage('profile'); setMobileMenuOpen(false) }}>{photo ? <img className="user-avatar" src={photo} alt="" /> : <span className="user-avatar avatar-green">{initials}</span>}<span><strong>{fullName}</strong><small>{isDemo ? 'Demo account' : 'GreenGoals member'}</small></span><Icon name="settings" size={18} /></button></div>
       </aside>
       <section className="dashboard-main">
-        <header className="dashboard-topbar"><button className="mobile-menu-trigger" type="button" aria-label="Open navigation menu" onClick={() => setMobileMenuOpen(true)}><Icon name="menu" /></button><div className="breadcrumb"><span>Your garden</span><Icon name="chevron" size={14} /><strong>{navItems.find(item => item.id === activePage)?.label || 'My profile'}</strong></div><div className="topbar-right">{isDemo && <span className="demo-indicator"><span /> DEMO MODE</span>}{dataState.error && <span className="demo-indicator" role="status">Action needs attention</span>}<button className="topbar-icon" aria-label="Notifications" type="button"><Icon name="bell" size={19} /><i /></button><span className="topbar-divider" />{photo ? <img className="user-avatar topbar-avatar" src={photo} alt={fullName} /> : <span className="user-avatar avatar-green topbar-avatar">{initials}</span>}</div></header>
-        <div className="dashboard-content"><div className="page-heading"><div><p className="eyebrow">{todayLabel} <span>✳</span> YOUR GARDEN IS GROWING</p><h1>{pageTitle}</h1></div><div className="heading-flourish">✺ <span>✳</span></div></div>{dataState.error && <p className="backend-error" role="alert">{dataState.error}</p>}{pageContent}<footer className="dashboard-footer"><Brand /><span>One small good thing at a time.</span><span>GROWING TOGETHER <span className="footer-heart">♥</span></span></footer></div>
+        <header className="dashboard-topbar"><button className="mobile-menu-trigger" type="button" aria-label="Open navigation menu" onClick={() => setMobileMenuOpen(true)}><Icon name="menu" /></button><div className="breadcrumb"><span>Your garden</span><Icon name="chevron" size={14} /><strong>{navItems.find(item => item.id === activePage)?.label || 'My profile'}</strong></div><div className="topbar-right">{isDemo && <span className="demo-indicator"><span /> DEMO MODE</span>}{dataState.error && <span className="demo-indicator" role="status">Action needs attention</span>}<button className="topbar-icon" aria-label="Notifications" type="button"><Icon name="bell" size={19} /><i /></button><span className="topbar-divider" /><div className="account-menu" ref={accountMenuRef}><button className="account-trigger" type="button" aria-label="Open account menu" aria-haspopup="menu" aria-expanded={accountMenuOpen} onClick={() => setAccountMenuOpen(open => !open)}>{photo ? <img className="user-avatar topbar-avatar" src={photo} alt="" /> : <span className="user-avatar avatar-green topbar-avatar">{initials}</span>}<Icon name="chevron" size={15} /></button>{accountMenuOpen && <div className="account-popover" role="menu" aria-label="Account menu"><div className="account-popover-profile">{photo ? <img className="user-avatar" src={photo} alt="" /> : <span className="user-avatar avatar-green">{initials}</span>}<span><strong>{fullName}</strong><small>{isDemo ? 'Demo account' : profile?.email}</small></span></div><div className="account-popover-points"><span className="account-points-icon">✳</span><span className="account-points-label"><small>YOUR IMPACT</small><strong>Points earned</strong></span><strong className="account-points-total">{points.toLocaleString()}<span> pts</span></strong></div><div className="account-popover-divider" /><button className={`account-menu-action${isDemo ? ' account-menu-action-demo' : ''}`} type="button" role="menuitem" onClick={() => { setAccountMenuOpen(false); onSignOut() }}><Icon name={isDemo ? 'arrow' : 'logout'} size={16} />{isDemo ? 'Exit Demo Mode' : 'Sign Out'}</button></div>}</div></div></header>
+        <div className="dashboard-content"><div className="page-heading"><div><p className="eyebrow">{todayLabel} <span>✳</span> YOUR GARDEN IS GROWING</p><h1>{pageTitle}</h1></div><div className="heading-flourish">✺ <span>✳</span></div></div>{dataState.error && <p className="backend-error" role="alert">{dataState.error}</p>}{pageContent}<footer className="dashboard-footer"><Brand onClick={() => { setActivePage('overview'); setMobileMenuOpen(false) }} /><span>One small good thing at a time.</span><span>GROWING TOGETHER <span className="footer-heart">♥</span></span></footer></div>
       </section>
     </main>
   )

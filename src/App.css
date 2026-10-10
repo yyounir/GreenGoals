@@ -3767,3 +3767,343 @@
         transition-duration: .01ms !important;
     }
 }
+
+/* Dashboard account menu and readable UI text */
+    .account-menu {
+        position: relative;
+    }
+
+    .account-trigger {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 0 3px 4px;
+        border: 0;
+        border-radius: 18px;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .account-trigger > svg {
+        color: #788575;
+        transition: transform .16s ease;
+    }
+
+    .account-trigger[aria-expanded="true"] > svg {
+        transform: rotate(90deg);
+    }
+
+    .account-popover {
+        position: absolute;
+        z-index: 20;
+        top: calc(100% + 12px);
+        right: 0;
+        width: min(310px, calc(100vw - 24px));
+        padding: 14px;
+        border: 1px solid #e3e9dd;
+        border-radius: 18px;
+        background: #fffefa;
+        box-shadow: 0 20px 52px rgba(36, 57, 39, .18);
+        animation: modal-in .14s ease-out;
+    }
+
+    .account-popover-profile {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 12px;
+        padding: 4px 4px 14px;
+    }
+
+    .account-popover-profile > span:last-child {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .account-popover-profile strong {
+        overflow: hidden;
+        color: #405341;
+        font-size: 15px;
+        font-weight: 700;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .account-popover-profile small {
+        overflow: hidden;
+        color: #7e887b;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .account-popover-points {
+        display: flex;
+        min-height: 72px;
+        align-items: center;
+        gap: 11px;
+        padding: 12px;
+        border: 1px solid #e3ecd8;
+        border-radius: 13px;
+        background: linear-gradient(120deg, #f3f8eb, #fbf8e9);
+    }
+
+    .account-points-icon {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 12px;
+        color: #52713e;
+        background: #e5efd7;
+        font-size: 21px;
+    }
+
+    .account-points-label {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .account-points-label small {
+        color: #74846b;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: .8px;
+    }
+
+    .account-points-label strong {
+        color: #405341;
+        font-size: 13px;
+    }
+
+    .account-points-total {
+        margin-left: auto;
+        color: #365b3c;
+        font-size: 20px;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    .account-points-total span {
+        color: #70806a;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .account-popover-divider {
+        height: 1px;
+        margin: 12px 0 9px;
+        background: #edf0e9;
+    }
+
+    .account-menu-action {
+        display: flex;
+        width: 100%;
+        min-height: 44px;
+        align-items: center;
+        gap: 10px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 11px;
+        color: #fff;
+        background: #456848;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .account-menu-action:hover,
+    .account-menu-action:focus-visible {
+        background: #36563a;
+    }
+
+    .account-menu-action-demo {
+        color: #674739;
+        background: #fbefe7;
+    }
+
+    .account-menu-action-demo:hover,
+    .account-menu-action-demo:focus-visible {
+        color: #543729;
+        background: #f6e3d7;
+    }
+
+    .app-shell .sidebar-group-label,
+    .app-shell .page-heading .eyebrow,
+    .app-shell .panel-heading .eyebrow,
+    .app-shell .your-standing .eyebrow,
+    .app-shell .profile-impact .eyebrow,
+    .app-shell .group-form label,
+    .app-shell .stat-label,
+    .app-shell .challenge-category {
+        font-size: 10px;
+    }
+
+    .app-shell .sidebar-link {
+        font-size: 13px;
+    }
+
+    .app-shell .sidebar-group-card strong,
+    .app-shell .profile-menu strong {
+        font-size: 11px;
+    }
+
+    .app-shell .sidebar-group-card small,
+    .app-shell .profile-menu small,
+    .app-shell .side-tip small {
+        font-size: 10px;
+    }
+
+    .app-shell .side-tip p {
+        font-size: 12px;
+    }
+
+    .app-shell .breadcrumb {
+        font-size: 11px;
+    }
+
+    .app-shell .demo-indicator {
+        font-size: 10px;
+    }
+
+    .app-shell .welcome-kicker {
+        font-size: 10px;
+    }
+
+    .app-shell .welcome-copy > p {
+        font-size: 12px;
+        line-height: 1.65;
+    }
+
+    .app-shell .welcome-copy .button,
+    .app-shell .stat-inline-link {
+        font-size: 11px;
+    }
+
+    .app-shell .stat-foot,
+    .app-shell .stat-caption {
+        font-size: 10px;
+    }
+
+    .app-shell .week-day {
+        font-size: 9px;
+    }
+
+    .app-shell .challenge-main h3 {
+        font-size: 13px;
+    }
+
+    .app-shell .challenge-main > p,
+    .app-shell .challenge-meta,
+    .app-shell .challenge-action {
+        font-size: 10px;
+    }
+
+    .app-shell .group-context strong,
+    .app-shell .leader-name strong {
+        font-size: 11px;
+    }
+
+    .app-shell .group-context small,
+    .app-shell .leader-name > span,
+    .app-shell .leader-points span {
+        font-size: 9px;
+    }
+
+    .app-shell .leader-points,
+    .app-shell .rank-number {
+        font-size: 11px;
+    }
+
+    .app-shell .view-all,
+    .app-shell .leaderboard-footer-link,
+    .app-shell .group-live {
+        font-size: 10px;
+    }
+
+    .app-shell .group-banner-copy .eyebrow {
+        font-size: 9px;
+    }
+
+    .app-shell .group-banner-copy h3 {
+        font-size: 13px;
+    }
+
+    .app-shell .group-banner-copy p,
+    .app-shell .dashboard-footer > span {
+        font-size: 10px;
+    }
+
+    .app-shell .dashboard-footer > span:last-child {
+        font-size: 9px;
+    }
+
+    .app-shell .panel-description,
+    .app-shell .ai-note small,
+    .app-shell .group-form select,
+    .app-shell .group-form input {
+        font-size: 12px;
+    }
+
+    .app-shell .ai-note strong {
+        font-size: 12px;
+    }
+
+    .app-shell .ai-pill,
+    .app-shell .group-form .button,
+    .app-shell .group-card-stats,
+    .app-shell .group-card-large .button,
+    .app-shell .profile-identity p,
+    .app-shell .profile-location,
+    .app-shell .profile-stats span,
+    .app-shell .impact-breakdown > span,
+    .app-shell .invite-button,
+    .app-shell .your-standing > p:not(.eyebrow),
+    .app-shell .your-standing .stat-inline-link {
+        font-size: 11px;
+    }
+
+    .app-shell .leaderboard-summary > div:first-child > span:last-child,
+    .app-shell .summary-avatars small,
+    .app-shell .full-leader-list .leader-name > span,
+    .app-shell .full-leader-list .rank-number {
+        font-size: 10px;
+    }
+
+    .app-shell .full-leader-list .leader-name strong,
+    .app-shell .full-leader-list .leader-points {
+        font-size: 12px;
+    }
+
+    .app-shell .group-card-stats strong,
+    .app-shell .impact-breakdown strong {
+        font-size: 12px;
+    }
+
+    @media (max-width: 480px) {
+        .app-shell .page-heading .eyebrow {
+            font-size: 9px;
+        }
+
+        .app-shell .welcome-kicker {
+            font-size: 8px;
+        }
+
+    .app-shell .welcome-copy > p {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+.account-popover {
+    position: fixed;
+    top: 66px;
+    right: max(12px, calc(100% - 100vw + 12px));
+}
+}
