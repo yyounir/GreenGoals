@@ -1,3 +1,6 @@
+require("dotenv").config();                                                          // needed for Gemini API key
+
+
 const express = require("express");                                                  // 1. Get Express 
 
 const app = express();                                                               // 2. Create the server

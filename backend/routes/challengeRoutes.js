@@ -6,13 +6,14 @@ const {
     getChallenges,
     getChallengeById,
     completeChallenge,
+    generateChallenges,
 } = require("../controllers/challengeController");
 
 
 router.get("/", getChallenges);
 router.get("/:id", getChallengeById);
 router.post("/:id/complete", completeChallenge);
-
+router.post("/generate", generateChallenges);
 
 
 module.exports = router;
