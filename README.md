@@ -21,12 +21,6 @@ The frontend is built to feel optimistic, warm, and motivating. It uses a leafy 
 
 ### 🌿 Product visuals
 
-![GreenGoals landing page hero artwork](src/assets/hero.png)
-
-![GreenGoals environment and sustainability mood](https://images.unsplash.com/photo-1492496913980-501348b61469?auto=format&fit=crop&w=1200&q=80)
-
-![Sustainable living animation](https://media.giphy.com/media/3o6ZtpxSZbQ2eVx9VS/giphy.gif)
-
 Key visual features include:
 
 - A hero landing page with a sustainability-first value proposition and a strong call to action.

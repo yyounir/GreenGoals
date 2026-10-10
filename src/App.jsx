@@ -64,6 +64,7 @@ function GoogleMark() {
 function SignInModal({ onClose, onDemo, onGoogleSignIn, busy, authError }) {
 
   return (
+
     <div className="modal-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) onClose() }}>
       <section className="signin-modal" role="dialog" aria-modal="true" aria-labelledby="signin-title">
         <button className="modal-close" type="button" onClick={onClose} aria-label="Close sign in"><Icon name="close" /></button>
