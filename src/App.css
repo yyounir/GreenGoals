@@ -110,7 +110,7 @@
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
-    border-bottom: 1px solid rgba(35, 72, 58, .08);
+    border-bottom: 1px solid rgba(35, 72, 58, .14);
 }
 
 .brand {
@@ -179,7 +179,7 @@
     grid-template-columns: 1fr 1fr;
     align-items: center;
     min-height: 537px;
-    padding-top: 14px;
+    padding: 26px 0 18px;
 }
 
 .hero-copy {
@@ -557,10 +557,10 @@
     display: grid;
     grid-template-columns: 1.35fr 1fr 1.2fr 1.15fr 1fr;
     align-items: center;
-    gap: 20px;
-    padding: 13px 23px;
-    border: 1px solid #e7e9e0;
-    border-radius: 9px;
+    gap: 24px;
+    padding: 18px 25px;
+    border: 1px solid #dfe5d8;
+    border-radius: 12px;
     background: rgba(255, 255, 255, .62);
 }
 
@@ -622,14 +622,14 @@
 .how-section {
     position: relative;
     z-index: 1;
-    padding: 100px 0 78px;
+    padding: 112px 0 88px;
 }
 
 .section-heading {
     display: flex;
     align-items: end;
     justify-content: space-between;
-    margin-bottom: 37px;
+    margin-bottom: 42px;
 }
 
 .section-heading h2 {
@@ -653,14 +653,14 @@
 .how-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 17px;
+    gap: 20px;
 }
 
 .how-card {
     min-height: 206px;
-    padding: 24px 22px;
-    border: 1px solid #e8ebe3;
-    border-radius: 9px;
+    padding: 28px 25px;
+    border: 1px solid #dfe5d9;
+    border-radius: 12px;
     background: rgba(255, 255, 255, .66);
 }
 
@@ -716,7 +716,7 @@
     align-items: center;
     justify-content: space-between;
     min-height: 65px;
-    border-top: 1px solid #e7e9e1;
+    border-top: 1px solid #dfe5d9;
 }
 
 .landing-footer .brand {
@@ -1519,17 +1519,17 @@
 .stats-grid {
     display: grid;
     grid-template-columns: 1.12fr 1fr 1fr;
-    gap: 13px;
-    margin-top: 15px;
+    gap: 16px;
+    margin-top: 18px;
 }
 
 .stat-card {
     position: relative;
     min-height: 133px;
     overflow: hidden;
-    padding: 15px 16px;
-    border: 1px solid #e9ece5;
-    border-radius: 8px;
+    padding: 19px 20px;
+    border: 1px solid #dfe5da;
+    border-radius: 11px;
     background: #fff;
 }
 
@@ -1723,15 +1723,15 @@
     display: grid;
     grid-template-columns: 1.45fr 1fr;
     align-items: start;
-    gap: 14px;
-    margin-top: 15px;
+    gap: 18px;
+    margin-top: 19px;
 }
 
 .content-panel {
     min-width: 0;
-    padding: 17px;
-    border: 1px solid #e9ece5;
-    border-radius: 8px;
+    padding: 21px;
+    border: 1px solid #dfe5da;
+    border-radius: 11px;
     background: #fff;
 }
 
@@ -1739,7 +1739,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 13px;
+    margin-bottom: 17px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #edf0e9;
 }
 
 .panel-heading h2 {
@@ -1788,17 +1790,17 @@
 
 .challenge-list {
     display: grid;
-    gap: 8px;
+    gap: 11px;
 }
 
 .challenge-card {
     display: grid;
     grid-template-columns: 36px 1fr auto;
     align-items: start;
-    gap: 10px;
-    padding: 11px 10px;
-    border: 1px solid #eef0eb;
-    border-radius: 7px;
+    gap: 13px;
+    padding: 15px 14px;
+    border: 1px solid #e2e8dd;
+    border-radius: 9px;
     background: #fdfdfa;
     transition: border .15s, background .15s;
 }
@@ -2021,9 +2023,9 @@
 
 .leaderboard-row {
     display: flex;
-    min-height: 43px;
+    min-height: 51px;
     align-items: center;
-    gap: 8px;
+    gap: 11px;
     border-bottom: 1px solid #f0f1ed;
 }
 
@@ -2284,8 +2286,9 @@
 
 .group-form {
     display: grid;
-    gap: 10px;
-    padding: 15px 9px 8px;
+    gap: 14px;
+    padding: 19px 12px 11px;
+    border-top: 1px solid #edf0e9;
 }
 
 .group-form label {
@@ -2554,12 +2557,14 @@
 .group-explore {
     display: grid;
     grid-template-columns: .85fr 1.3fr;
-    gap: 14px;
+    gap: 18px;
 }
 
 .groups-featured {
     min-height: 310px;
-    padding: 23px;
+    padding: 27px;
+    border: 1px solid #dfe6d6;
+    border-radius: 11px;
     background: linear-gradient(155deg, #f1f5e9, #f9f8f1);
 }
 
