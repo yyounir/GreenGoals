@@ -32,6 +32,8 @@ Cloud Functions deployment and Gemini API usage may require the Firebase project
 
 Firestore client writes are deliberately denied. Callable functions verify Firebase Auth and perform profile creation, one-per-day challenge generation, challenge completion and point awards, and group creation/joining. Group membership is required before reading group documents or leaderboard members. Points cannot be supplied by the browser; they are awarded only from the stored challenge record in a Firestore transaction.
 
+Groups can be created as a class, club, friend group, organization, or neighborhood. Group totals and each member's contribution are updated with challenge awards and shown alongside the group leaderboard.
+
 ## Demo and limitations
 
 Choose **Explore the demo** to use sample challenges and a sample leaderboard without Firebase. Demo actions are local to the page session and do not persist. Firebase sign-in and persistent data require the setup above. The generated challenges are produced once per UTC day per account; the button loads the day's challenge set again rather than asking Gemini for a second set.

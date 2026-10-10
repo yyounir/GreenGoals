@@ -12,6 +12,7 @@ setGlobalOptions({ region: 'us-central1', maxInstances: 10 })
 const db = getFirestore()
 const geminiApiKey = defineSecret('GEMINI_API_KEY')
 const categories = ['OUTDOORS', 'AT HOME', 'COMMUNITY', 'ON THE GO', 'MINDFUL LIVING']
+const groupTypes = ['Class', 'Club', 'Friends', 'Organization', 'Neighborhood']
 const icons = ['sun', 'leaf', 'heart']
 const colors = ['lime', 'peach', 'blue']
 const challengeSchema = {
@@ -216,10 +217,30 @@ export const completeChallenge = onCall(async request => {
       ? user.streakDays || 1
       : user.lastCompletedDay === yesterday ? (user.streakDays || 0) + 1 : 1
     let memberRef
+    let groupRef
+    let groupPoints
     if (user.groupId) {
+      groupRef = db.doc(`groups/${user.groupId}`)
       memberRef = db.doc(`groups/${user.groupId}/members/${uid}`)
-      const memberSnapshot = await transaction.get(memberRef)
-      if (!memberSnapshot.exists) memberRef = null
+      const [memberSnapshot, groupSnapshot] = await Promise.all([
+        transaction.get(memberRef),
+        transaction.get(groupRef),
+      ])
+      if (!memberSnapshot.exists || !groupSnapshot.exists) {
+        memberRef = null
+        groupRef = null
+      } else if (Number.isSafeInteger(groupSnapshot.data().points) && groupSnapshot.data().points >= 0) {
+        groupPoints = groupSnapshot.data().points
+      } else {
+        const membersSnapshot = await transaction.get(groupRef.collection('members'))
+        groupPoints = membersSnapshot.docs.reduce((total, member) => {
+          const memberPoints = member.data().points
+          if (!Number.isSafeInteger(memberPoints) || memberPoints < 0) {
+            throw new HttpsError('failed-precondition', 'This group has invalid member point data.')
+          }
+          return total + memberPoints
+        }, 0)
+      }
     }
     transaction.update(challengeRef, { completed: true, completedAt: FieldValue.serverTimestamp() })
     transaction.update(userRef, {
@@ -229,11 +250,14 @@ export const completeChallenge = onCall(async request => {
       lastCompletedDay: today,
       updatedAt: FieldValue.serverTimestamp(),
     })
-    if (memberRef) {
+    if (memberRef && groupRef) {
       transaction.set(memberRef, {
         points: FieldValue.increment(challenge.points),
         updatedAt: FieldValue.serverTimestamp(),
       }, { merge: true })
+      transaction.update(groupRef, {
+        points: groupPoints + challenge.points,
+      })
     }
     return { pointsEarned: challenge.points }
   })
@@ -242,8 +266,12 @@ export const completeChallenge = onCall(async request => {
 export const createGroup = onCall(async request => {
   const uid = requireUid(request)
   const name = typeof request.data?.name === 'string' ? request.data.name.trim() : ''
+  const type = typeof request.data?.type === 'string' ? request.data.type : 'Friends'
   if (name.length < 3 || name.length > 40) {
     throw new HttpsError('invalid-argument', 'Group names must be between 3 and 40 characters.')
+  }
+  if (!groupTypes.includes(type)) {
+    throw new HttpsError('invalid-argument', 'Choose a valid group type.')
   }
   const userRef = db.doc(`users/${uid}`)
   const groupRef = db.collection('groups').doc()
@@ -263,9 +291,11 @@ export const createGroup = onCall(async request => {
     if (codeSnapshot.exists) throw new HttpsError('aborted', 'Please try creating your group again.')
     transaction.create(groupRef, {
       name,
+      type,
       createdBy: uid,
       joinCode: code,
       memberCount: 1,
+      points: 0,
       createdAt: FieldValue.serverTimestamp(),
     })
     transaction.create(codeRef, { groupId: groupRef.id, createdAt: FieldValue.serverTimestamp() })
@@ -276,7 +306,7 @@ export const createGroup = onCall(async request => {
       updatedAt: FieldValue.serverTimestamp(),
     })
   })
-  return { groupId: groupRef.id, name, joinCode: code }
+  return { groupId: groupRef.id, name, type, joinCode: code }
 })
 
 export const joinGroup = onCall(async request => {
@@ -309,5 +339,5 @@ export const joinGroup = onCall(async request => {
       updatedAt: FieldValue.serverTimestamp(),
     })
   })
-  return { groupId: joinedGroup.id, name: joinedGroup.name }
+  return { groupId: joinedGroup.id, name: joinedGroup.name, type: joinedGroup.type || 'Friends' }
 })

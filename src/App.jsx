@@ -156,9 +156,15 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
   const [completedIds, setCompletedIds] = useState([])
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [demoGroupName, setDemoGroupName] = useState('')
+  const [demoGroupType, setDemoGroupType] = useState('Friends')
+  const [groupTypeInput, setGroupTypeInput] = useState('Friends')
   const [groupInput, setGroupInput] = useState('')
   const challenges = isDemo ? localChallenges : dataState.challenges
-  const points = isDemo ? 1840 + localChallenges.filter(challenge => completedIds.includes(challenge.id)).reduce((total, challenge) => total + challenge.points, 0) : dataState.user?.points || 0
+  const demoContribution = localChallenges.filter(challenge => completedIds.includes(challenge.id)).reduce((total, challenge) => total + challenge.points, 0)
+  const points = isDemo ? 1840 + demoContribution : dataState.user?.points || 0
+  const totalGroupPoints = isDemo
+    ? 18420 + demoContribution
+    : dataState.group?.points ?? dataState.leaderboard.reduce((total, member) => total + (member.points || 0), 0)
   const displayName = profile?.name?.split(' ')[0] || 'Taylor'
   const fullName = profile?.name || 'Taylor Green'
   const initials = profile?.name ? profile.name.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase() : 'TG'
@@ -200,12 +206,13 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
     if (isDemo) {
       if (groupInput.trim().length < 3) return
       setDemoGroupName(groupInput.trim())
+      setDemoGroupType(groupTypeInput)
       setGroupInput('')
       return
     }
     setDataState(state => ({ ...state, busyAction: true, error: '' }))
     try {
-      const result = await createGroupRequest(groupInput)
+      const result = await createGroupRequest(groupInput, groupTypeInput)
       setDataState(state => ({ ...state, busyAction: false, user: { ...state.user, groupId: result.groupId, groupName: result.name, joinCode: result.joinCode } }))
     } catch (error) {
       setDataState(state => ({ ...state, busyAction: false, error: error.message || 'Could not create your group.' }))
@@ -215,6 +222,7 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
     if (isDemo) {
       if (groupInput.trim().length !== 8) return
       setDemoGroupName('The Sunday Sprouts')
+      setDemoGroupType('Friends')
       setGroupInput('')
       return
     }
@@ -228,6 +236,8 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
   }
   const displayedChallenges = challenges.length ? challenges : isDemo ? localChallenges : []
   const groupName = dataState.user?.groupName || demoGroupName || (isDemo ? 'The Sunday Sprouts' : 'Find your people')
+  const currentGroupType = dataState.group?.type || (isDemo ? demoGroupType : dataState.user?.groupId ? 'Friends' : '')
+  const groupContribution = isDemo ? demoContribution : dataState.groupContribution || 0
 
   const pageTitle = { overview: 'Your little corner of good.', challenges: 'Find your next good thing.', leaderboard: 'Good is better together.', groups: 'Find your kind of people.', profile: 'The good you’re growing.' }[activePage]
 
@@ -235,7 +245,7 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
     <>
       <section className="welcome-banner"><div className="welcome-copy"><span className="welcome-kicker">MONDAY, MAY 19 <span>✳</span> YOUR WEEKLY CHECK-IN</span><h2>Hey, {displayName}.<br />Look at you, <em>growing.</em></h2><p>You’re making a difference one small thing at a time. Ready for your next one?</p><button className="button button-primary" type="button" onClick={() => setActivePage('challenges')}>Find a challenge <Icon name="arrow" size={17} /></button></div><div className="welcome-illustration"><div className="welcome-disc" /><div className="welcome-plant"><span className="welcome-stem" /><i className="welcome-leaf wl-one" /><i className="welcome-leaf wl-two" /><i className="welcome-leaf wl-three" /><i className="welcome-leaf wl-four" /><div className="welcome-pot" /></div><span className="welcome-star star-left">✳</span><span className="welcome-star star-right">✺</span><div className="banner-floating"><Icon name="leaf" size={16} /> growing steadily</div></div></section>
       <section className="stats-grid" aria-label="Your impact so far"><article className="stat-card stat-featured"><div className="stat-card-top"><span className="stat-label">YOUR GREEN POINTS</span><span className="stat-icon"><Icon name="leaf" size={18} /></span></div><strong className="stat-value">{points.toLocaleString()}</strong><div className="stat-foot"><span className="positive-change"><Icon name="arrowUp" size={13} /> {isDemo ? completedIds.reduce((total, id) => total + (localChallenges.find(challenge => challenge.id === id)?.points || 0), 0) : dataState.user?.points || 0}</span><span>all time</span><span className="stat-foot-label">Keep it up!</span></div><div className="stat-sparkline"><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></div></article><article className="stat-card"><div className="stat-card-top"><span className="stat-label">YOUR STREAK</span><span className="stat-icon stat-icon-peach">🔥</span></div><strong className="stat-value">{currentStreak} <small>days</small></strong><p className="stat-caption">{currentStreak ? 'A little good, day after day.' : 'Complete a challenge to start.'}</p><div className="week-dots">{['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => <span className={index < Math.min(currentStreak, 7) ? 'week-day week-done' : 'week-day'} key={`${day}-${index}`}>{index < Math.min(currentStreak, 7) ? <Icon name="check" size={12} /> : day}</span>)}</div></article><article className="stat-card stat-rank-card"><div className="stat-card-top"><span className="stat-label">GROUP RANK</span><span className="stat-icon stat-icon-yellow"><Icon name="trophy" size={18} /></span></div><strong className="stat-value">{ownRank ? `#${ownRank}` : '—'} <small>{leaderboardCount ? `of ${leaderboardCount}` : 'join a group'}</small></strong><p className="stat-caption">{ownRank ? 'Your group is cheering you on.' : 'Find your people to compete.'}</p><button type="button" className="stat-inline-link" onClick={() => setActivePage(dataState.user?.groupId ? 'leaderboard' : 'groups')}>{ownRank ? 'View leaderboard' : 'Find a group'} <Icon name="arrow" size={14} /></button></article></section>
-      <div className="dashboard-columns"><section className="content-panel challenges-panel"><div className="panel-heading"><div><p className="eyebrow">A GOOD PLACE TO START</p><h2>Made for your day.</h2></div><button className="view-all" type="button" onClick={() => setActivePage('challenges')}>All challenges <Icon name="arrow" size={15} /></button></div>{displayedChallenges.length ? <div className="challenge-list">{displayedChallenges.slice(0, 2).map(challenge => <ChallengeCard key={challenge.id} challenge={challenge} completed={isDemo ? completedIds.includes(challenge.id) : challenge.completed} onComplete={completeChallenge} />)}</div> : <LoadingState busy={dataState.busyAction} onRetry={refreshChallenges} />}</section><section className="content-panel leaderboard-panel"><div className="panel-heading"><div><p className="eyebrow">FRIENDLY COMPETITION</p><h2>Your group.</h2></div><button className="icon-button" type="button" aria-label="View full leaderboard" onClick={() => setActivePage('leaderboard')}><Icon name="arrowUp" size={17} /></button></div><div className="group-context"><span className="group-avatar">🌿</span><span><strong>{groupName}</strong><small>{isDemo ? 24 : dataState.group?.memberCount || dataState.leaderboard.length} good humans</small></span><span className="group-live"><i /> LIVE</span></div><LeaderboardRows points={points} profile={profile} entries={leaderboardEntries} /><button className="leaderboard-footer-link" type="button" onClick={() => setActivePage('leaderboard')}>See the whole leaderboard <Icon name="arrow" size={15} /></button></section></div>
+      <div className="dashboard-columns"><section className="content-panel challenges-panel"><div className="panel-heading"><div><p className="eyebrow">A GOOD PLACE TO START</p><h2>Made for your day.</h2></div><button className="view-all" type="button" onClick={() => setActivePage('challenges')}>All challenges <Icon name="arrow" size={15} /></button></div>{displayedChallenges.length ? <div className="challenge-list">{displayedChallenges.slice(0, 2).map(challenge => <ChallengeCard key={challenge.id} challenge={challenge} completed={isDemo ? completedIds.includes(challenge.id) : challenge.completed} onComplete={completeChallenge} />)}</div> : <LoadingState busy={dataState.busyAction} onRetry={refreshChallenges} />}</section><section className="content-panel leaderboard-panel"><div className="panel-heading"><div><p className="eyebrow">FRIENDLY COMPETITION</p><h2>Your group.</h2></div><button className="icon-button" type="button" aria-label="View full leaderboard" onClick={() => setActivePage('leaderboard')}><Icon name="arrowUp" size={17} /></button></div><div className="group-context"><span className="group-avatar">🌿</span><span><strong>{groupName}</strong><small>{currentGroupType ? `${currentGroupType} · ` : ''}{isDemo ? 24 : dataState.group?.memberCount || dataState.leaderboard.length} good humans</small></span><span className="group-live"><i /> LIVE</span></div><LeaderboardRows points={points} profile={profile} entries={leaderboardEntries} /><button className="leaderboard-footer-link" type="button" onClick={() => setActivePage('leaderboard')}>See the whole leaderboard <Icon name="arrow" size={15} /></button></section></div>
       <section className="group-banner"><div className="group-banner-icon">🌱</div><div className="group-banner-copy"><span className="eyebrow">GOOD THINGS HAPPEN IN GROUPS</span><h3>Find your people. Grow together.</h3><p>Friends, coworkers, neighbors — there’s a group for your kind of good.</p></div><button className="button button-outline" type="button" onClick={() => setActivePage('groups')}>Explore groups <Icon name="arrow" size={16} /></button></section>
     </>
   )
@@ -245,15 +255,15 @@ function Dashboard({ profile, isDemo, onSignOut, dataState, setDataState }) {
   )
 
   const renderLeaderboard = () => (
-    <div className="dashboard-columns leaderboard-page-grid"><section className="content-panel full-panel"><div className="panel-heading"><div><p className="eyebrow">{groupName.toUpperCase()}</p><h2>The good is adding up.</h2><p className="panel-description">A little friendly competition. A lot of shared impact.</p></div><span className="leaderboard-week-pill">🌿 &nbsp; All time</span></div><div className="leaderboard-summary"><div><span className="eyebrow">GROUP POINTS</span><strong>{(isDemo ? leaderboard.reduce((total, entry) => total + (entry.you ? points : entry.points), 0) : dataState.leaderboard.reduce((total, entry) => total + (entry.points || 0), 0)).toLocaleString()}</strong><span>points grown together</span></div><div className="summary-avatars"><span>🌱</span><span>🌼</span><span>🌻</span><span>🍀</span><small>+{Math.max(0, (isDemo ? leaderboard.length : dataState.leaderboard.length) - 4)}</small></div></div>{isDemo || dataState.leaderboard.length ? <div className="full-leader-list"><LeaderboardRows full points={points} profile={profile} entries={leaderboardEntries} /></div> : <p className="panel-description">Join a group to see its leaderboard here.</p>}<button type="button" className="button button-outline invite-button" onClick={() => setActivePage('groups')}><Icon name="plus" size={16} /> Invite a friend to your group</button></section><section className="content-panel your-standing"><span className="standing-icon">🏅</span><p className="eyebrow">YOUR CURRENT STANDING</p><strong>{ownRank ? `#${ownRank}` : '—'}</strong><span className="standing-of">out of {isDemo ? leaderboard.length : dataState.leaderboard.length} good humans</span><div className="standing-progress"><span style={{ width: ownRank ? `${Math.max(10, 100 - ((ownRank - 1) / Math.max(isDemo ? leaderboard.length : dataState.leaderboard.length, 1)) * 100)}%` : '0%' }} /></div><p>Your group’s small steps are adding up. Take on another challenge and keep growing!</p><button className="stat-inline-link" type="button" onClick={() => setActivePage('challenges')}>Find your next challenge <Icon name="arrow" size={14} /></button><div className="standing-doodle">✳</div></section></div>
+    <div className="dashboard-columns leaderboard-page-grid"><section className="content-panel full-panel"><div className="panel-heading"><div><p className="eyebrow">{groupName.toUpperCase()}</p><h2>The good is adding up.</h2><p className="panel-description">A little friendly competition. A lot of shared impact.</p></div><span className="leaderboard-week-pill">🌿 &nbsp; All time</span></div><div className="leaderboard-summary"><div><span className="eyebrow">GROUP POINTS</span><strong>{totalGroupPoints.toLocaleString()}</strong><span>points grown together</span></div><div className="summary-avatars"><span>🌱</span><span>🌼</span><span>🌻</span><span>🍀</span><small>+{Math.max(0, (isDemo ? leaderboard.length : dataState.leaderboard.length) - 4)}</small></div></div>{isDemo || dataState.leaderboard.length ? <div className="full-leader-list"><LeaderboardRows full points={points} profile={profile} entries={leaderboardEntries} /></div> : <p className="panel-description">Join a group to see its leaderboard here.</p>}<button type="button" className="button button-outline invite-button" onClick={() => setActivePage('groups')}><Icon name="plus" size={16} /> Invite a friend to your group</button></section><section className="content-panel your-standing"><span className="standing-icon">🏅</span><p className="eyebrow">YOUR CURRENT STANDING</p><strong>{ownRank ? `#${ownRank}` : '—'}</strong><span className="standing-of">out of {isDemo ? leaderboard.length : dataState.leaderboard.length} good humans</span><div className="standing-progress"><span style={{ width: ownRank ? `${Math.max(10, 100 - ((ownRank - 1) / Math.max(isDemo ? leaderboard.length : dataState.leaderboard.length, 1)) * 100)}%` : '0%' }} /></div><p>Your group’s small steps are adding up. Take on another challenge and keep growing!</p><button className="stat-inline-link" type="button" onClick={() => setActivePage('challenges')}>Find your next challenge <Icon name="arrow" size={14} /></button><div className="standing-doodle">✳</div></section></div>
   )
 
   const renderGroups = () => (
-    <div className="group-explore"><section className="content-panel groups-featured"><span className="group-featured-emoji">🌻</span><p className="eyebrow">YOUR PEOPLE, YOUR PLANET</p><h2>Find your kind<br />of good.</h2><p>Big change starts with a few people who care. Find your crew, start a friendly challenge, and make good a shared thing.</p></section><section className="content-panel"><div className="panel-heading"><div><p className="eyebrow">YOUR CIRCLE</p><h2>{groupName}.</h2></div><span className="group-live"><i /> {dataState.user?.groupId || (isDemo && demoGroupName) ? 'ACTIVE' : 'READY'}</span></div>{dataState.user?.groupId || (isDemo && demoGroupName) ? <div className="group-card-large"><div className="group-avatar-large">🌿</div><h3>{groupName}</h3><p>Little changes. Big growing energy.</p><div className="group-member-stack">{dataState.leaderboard.slice(0, 4).map((member, index) => <span className={`mini-avatar ${['avatar-peach', 'avatar-lilac', 'avatar-green', 'avatar-blue'][index]}`} key={member.uid}>{member.name?.[0] || 'G'}</span>)}<span className="member-count">{isDemo ? 24 : dataState.leaderboard.length} good humans</span></div><div className="group-card-stats"><span><strong>{isDemo ? '18,420' : dataState.leaderboard.reduce((total, member) => total + (member.points || 0), 0).toLocaleString()}</strong> group points</span><span><strong>{dataState.group?.joinCode || dataState.user?.joinCode || (isDemo ? 'DEMO-GROUP' : '••••••••')}</strong> invite code</span></div><button className="button button-outline" type="button" onClick={() => setActivePage('leaderboard')}>Visit leaderboard <Icon name="arrow" size={15} /></button></div> : <div className="group-form"><label htmlFor="group-value">Create a group or join one</label><input id="group-value" value={groupInput} onChange={event => setGroupInput(event.target.value)} placeholder="Group name or 8-character code" maxLength={40} /><div className="group-form-actions"><button className="button button-primary" disabled={dataState.busyAction || groupInput.trim().length < 3} type="button" onClick={createGroup}><Icon name="plus" size={15} /> Create group</button><button className="button button-outline" disabled={dataState.busyAction || groupInput.trim().length !== 8} type="button" onClick={joinGroup}>Join with code <Icon name="arrow" size={15} /></button></div></div>}</section></div>
+    <div className="group-explore"><section className="content-panel groups-featured"><span className="group-featured-emoji">🌻</span><p className="eyebrow">YOUR PEOPLE, YOUR PLANET</p><h2>Find your kind<br />of good.</h2><p>Big change starts with a few people who care. Find your crew, start a friendly challenge, and make good a shared thing.</p></section><section className="content-panel"><div className="panel-heading"><div><p className="eyebrow">YOUR CIRCLE</p><h2>{groupName}.</h2></div><span className="group-live"><i /> {dataState.user?.groupId || (isDemo && demoGroupName) ? 'ACTIVE' : 'READY'}</span></div>{dataState.user?.groupId || (isDemo && demoGroupName) ? <div className="group-card-large"><div className="group-avatar-large">🌿</div><h3>{groupName}</h3><p>{currentGroupType || 'Group'} · Little changes. Big growing energy.</p><div className="group-member-stack">{dataState.leaderboard.slice(0, 4).map((member, index) => <span className={`mini-avatar ${['avatar-peach', 'avatar-lilac', 'avatar-green', 'avatar-blue'][index]}`} key={member.uid}>{member.name?.[0] || 'G'}</span>)}<span className="member-count">{isDemo ? 24 : dataState.group?.memberCount || dataState.leaderboard.length} good humans</span></div><div className="group-card-stats"><span><strong>{totalGroupPoints.toLocaleString()}</strong> group points</span><span><strong>{groupContribution.toLocaleString()}</strong> your contribution</span><span><strong>{dataState.group?.joinCode || dataState.user?.joinCode || (isDemo ? 'DEMO-GROUP' : '••••••••')}</strong> invite code</span></div><button className="button button-outline" type="button" onClick={() => setActivePage('leaderboard')}>Visit leaderboard <Icon name="arrow" size={15} /></button></div> : <div className="group-form"><label htmlFor="group-value">Create a group or join one</label><input id="group-value" value={groupInput} onChange={event => setGroupInput(event.target.value)} placeholder="Group name or 8-character code" maxLength={40} /><label htmlFor="group-type">Group type</label><select id="group-type" value={groupTypeInput} onChange={event => setGroupTypeInput(event.target.value)}><option>Class</option><option>Club</option><option>Friends</option><option>Organization</option><option>Neighborhood</option></select><div className="group-form-actions"><button className="button button-primary" disabled={dataState.busyAction || groupInput.trim().length < 3} type="button" onClick={createGroup}><Icon name="plus" size={15} /> Create group</button><button className="button button-outline" disabled={dataState.busyAction || groupInput.trim().length !== 8} type="button" onClick={joinGroup}>Join with code <Icon name="arrow" size={15} /></button></div></div>}</section></div>
   )
 
   const renderProfile = () => (
-    <div className="profile-grid"><section className="content-panel profile-card"><div className="profile-cover"><span className="cover-leaf">✳</span><span className="cover-flower">✿</span></div><div className="profile-identity">{photo ? <img className="profile-avatar" src={photo} alt="" /> : <span className="profile-avatar profile-avatar-fallback">{initials}</span>}<span className="profile-rank">🌱 &nbsp; Growing every day</span><h2>{fullName}</h2><p>{profile?.email || 'A good human making a difference.'}</p><span className="profile-location">🌿 &nbsp; {groupName}</span></div><div className="profile-stats"><div><strong>{points.toLocaleString()}</strong><span>green points</span></div><div><strong>{currentStreak}</strong><span>day streak</span></div><div><strong>{completedTotal}</strong><span>challenges</span></div></div></section><section className="content-panel profile-impact"><p className="eyebrow">YOUR GOOD, SO FAR</p><h2>Look at all that growing.</h2><p>Every challenge is a small vote for the kind of world you want to live in. Keep going.</p><div className="impact-breakdown"><span><i className="breakdown-dot breakdown-green" /> Challenges completed <strong>{completedTotal.toString().padStart(2, '0')}</strong></span><span><i className="breakdown-dot breakdown-peach" /> Points collected <strong>{points.toLocaleString()}</strong></span><span><i className="breakdown-dot breakdown-blue" /> Group standing <strong>{ownRank ? `#${ownRank}` : '—'}</strong></span></div><button className="button button-outline profile-signout" type="button" onClick={onSignOut}><Icon name="logout" size={16} /> Sign out</button></section></div>
+    <div className="profile-grid"><section className="content-panel profile-card"><div className="profile-cover"><span className="cover-leaf">✳</span><span className="cover-flower">✿</span></div><div className="profile-identity">{photo ? <img className="profile-avatar" src={photo} alt="" /> : <span className="profile-avatar profile-avatar-fallback">{initials}</span>}<span className="profile-rank">🌱 &nbsp; Growing every day</span><h2>{fullName}</h2><p>{profile?.email || 'A good human making a difference.'}</p><span className="profile-location">🌿 &nbsp; {groupName}</span></div><div className="profile-stats"><div><strong>{points.toLocaleString()}</strong><span>green points</span></div><div><strong>{currentStreak}</strong><span>day streak</span></div><div><strong>{completedTotal}</strong><span>challenges</span></div></div></section><section className="content-panel profile-impact"><p className="eyebrow">YOUR GOOD, SO FAR</p><h2>Look at all that growing.</h2><p>Every challenge is a small vote for the kind of world you want to live in. Keep going.</p><div className="impact-breakdown"><span><i className="breakdown-dot breakdown-green" /> Challenges completed <strong>{completedTotal.toString().padStart(2, '0')}</strong></span><span><i className="breakdown-dot breakdown-peach" /> Points collected <strong>{points.toLocaleString()}</strong></span><span><i className="breakdown-dot breakdown-blue" /> Group contribution <strong>{dataState.user?.groupId || isDemo && demoGroupName ? groupContribution.toLocaleString() : '—'}</strong></span><span><i className="breakdown-dot breakdown-blue" /> Group standing <strong>{ownRank ? `#${ownRank}` : '—'}</strong></span></div><button className="button button-outline profile-signout" type="button" onClick={onSignOut}><Icon name="logout" size={16} /> Sign out</button></section></div>
   )
 
   const pageContent = { overview: renderOverview, challenges: renderChallenges, leaderboard: renderLeaderboard, groups: renderGroups, profile: renderProfile }[activePage]()
@@ -283,7 +293,7 @@ function App() {
   const [isSignInOpen, setIsSignInOpen] = useState(false)
   const [authLoading, setAuthLoading] = useState(firebaseReady)
   const [authError, setAuthError] = useState('')
-  const [dataState, setDataState] = useState({ user: null, group: null, challenges: [], leaderboard: [], busyAction: false, error: '' })
+  const [dataState, setDataState] = useState({ user: null, group: null, groupContribution: 0, challenges: [], leaderboard: [], busyAction: false, error: '' })
   const generationRequested = useRef('')
 
   useEffect(() => {
@@ -294,6 +304,7 @@ function App() {
     let stopChallenges = () => {}
     let stopGroup = () => {}
     let stopMembers = () => {}
+    let stopContribution = () => {}
 
     authServices.then(authService => {
       if (!active || !authService) return
@@ -303,6 +314,7 @@ function App() {
         stopChallenges()
         stopGroup()
         stopMembers()
+        stopContribution()
         if (!active) return
         setAuthLoading(false)
         setAuthError('')
@@ -310,12 +322,12 @@ function App() {
         if (!user) {
           setProfile(null)
           setIsDemo(false)
-          setDataState({ user: null, group: null, challenges: [], leaderboard: [], busyAction: false, error: '' })
+          setDataState({ user: null, group: null, groupContribution: 0, challenges: [], leaderboard: [], busyAction: false, error: '' })
           return
         }
         setProfile({ uid: user.uid, name: user.displayName || 'GreenGoals member', email: user.email || '', picture: user.photoURL || '' })
         setIsDemo(false)
-        setDataState({ user: null, group: null, challenges: [], leaderboard: [], busyAction: true, error: '' })
+        setDataState({ user: null, group: null, groupContribution: 0, challenges: [], leaderboard: [], busyAction: true, error: '' })
         let firebase
         try {
           firebase = await loadDataServices()
@@ -337,6 +349,7 @@ function App() {
           setDataState(state => ({ ...state, user: userData, busyAction: false }))
           stopGroup()
           stopMembers()
+          stopContribution()
           if (userData.groupId) {
             stopGroup = firestoreModule.onSnapshot(firestoreModule.doc(db, 'groups', userData.groupId), groupSnapshot => {
               setDataState(state => ({ ...state, group: groupSnapshot.exists() ? { id: groupSnapshot.id, ...groupSnapshot.data() } : null }))
@@ -349,8 +362,16 @@ function App() {
             stopMembers = firestoreModule.onSnapshot(membersQuery, membersSnapshot => {
               setDataState(state => ({ ...state, leaderboard: membersSnapshot.docs.map(member => ({ uid: member.id, ...member.data() })) }))
             }, error => setDataState(state => ({ ...state, error: error.message })))
+            stopContribution = firestoreModule.onSnapshot(
+              firestoreModule.doc(db, 'groups', userData.groupId, 'members', user.uid),
+              memberSnapshot => setDataState(state => ({
+                ...state,
+                groupContribution: memberSnapshot.exists() ? memberSnapshot.data().points || 0 : 0,
+              })),
+              error => setDataState(state => ({ ...state, error: error.message })),
+            )
           } else {
-            setDataState(state => ({ ...state, group: null, leaderboard: [] }))
+            setDataState(state => ({ ...state, group: null, groupContribution: 0, leaderboard: [] }))
           }
         }, error => setDataState(state => ({ ...state, busyAction: false, error: error.message })))
 
@@ -387,6 +408,7 @@ function App() {
       stopChallenges()
       stopGroup()
       stopMembers()
+      stopContribution()
     }
   }, [])
 
@@ -418,7 +440,7 @@ function App() {
     }
     setProfile(null)
     setIsDemo(false)
-    setDataState({ user: null, group: null, challenges: [], leaderboard: [], busyAction: false, error: '' })
+    setDataState({ user: null, group: null, groupContribution: 0, challenges: [], leaderboard: [], busyAction: false, error: '' })
   }
 
   return profile

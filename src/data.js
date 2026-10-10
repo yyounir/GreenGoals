@@ -10,5 +10,5 @@ async function callFunction(name, data = {}) {
 export const initializeUser = () => callFunction('initializeUser')
 export const generateChallenges = () => callFunction('generateChallenges')
 export const completeChallenge = challengeId => callFunction('completeChallenge', { challengeId })
-export const createGroup = name => callFunction('createGroup', { name })
+export const createGroup = (name, type) => callFunction('createGroup', { name, type })
 export const joinGroup = code => callFunction('joinGroup', { code })
