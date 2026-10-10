@@ -559,7 +559,7 @@
     align-items: center;
     gap: 24px;
     padding: 18px 25px;
-    border: 1px solid #dfe5d8;
+    border: 2px solid #dfe5d8;
     border-radius: 12px;
     background: rgba(255, 255, 255, .62);
 }
@@ -659,7 +659,7 @@
 .how-card {
     min-height: 206px;
     padding: 28px 25px;
-    border: 1px solid #dfe5d9;
+    border: 2px solid #dfe5d9;
     border-radius: 12px;
     background: rgba(255, 255, 255, .66);
 }
@@ -1107,7 +1107,7 @@
     margin: 14px 0 14px;
     padding: 14px 13px 13px 16px;
     overflow: hidden;
-    border: 1px solid #e9eee0;
+    border: 2px solid #e9eee0;
     border-radius: 8px;
     background: #f6f8ef;
 }
@@ -1187,6 +1187,9 @@
 .dashboard-main {
     min-width: 0;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     margin-left: 242px;
 }
 
@@ -1286,6 +1289,9 @@
 
 .dashboard-content {
     width: min(1070px, calc(100% - 76px));
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     margin: 0 auto;
 }
 
@@ -1328,7 +1334,7 @@
     display: flex;
     min-height: 205px;
     overflow: hidden;
-    border: 1px solid #e5ecd9;
+    border: 2px solid #e5ecd9;
     border-radius: 9px;
     background: linear-gradient(106deg, #eef4e3 0%, #edf3e2 54%, #e7efda 100%);
 }
@@ -1528,7 +1534,7 @@
     min-height: 133px;
     overflow: hidden;
     padding: 19px 20px;
-    border: 1px solid #dfe5da;
+    border: 2px solid #dfe5da;
     border-radius: 11px;
     background: #fff;
 }
@@ -1730,7 +1736,7 @@
 .content-panel {
     min-width: 0;
     padding: 21px;
-    border: 1px solid #dfe5da;
+    border: 2px solid #dfe5da;
     border-radius: 11px;
     background: #fff;
 }
@@ -1799,7 +1805,7 @@
     align-items: start;
     gap: 13px;
     padding: 15px 14px;
-    border: 1px solid #e2e8dd;
+    border: 2px solid #e2e8dd;
     border-radius: 9px;
     background: #fdfdfa;
     transition: border .15s, background .15s;
@@ -2095,7 +2101,7 @@
     gap: 13px;
     margin: 14px 0 22px;
     padding: 13px 16px;
-    border: 1px solid #e9ebdf;
+    border: 2px solid #e9ebdf;
     border-radius: 7px;
     background: linear-gradient(100deg, #f2f4e8, #fbfaf3);
 }
@@ -2144,7 +2150,7 @@
     min-height: 54px;
     align-items: center;
     justify-content: space-between;
-    margin-top: 22px;
+    margin-top: auto;
     border-top: 1px solid #e9ece5;
 }
 
@@ -2563,7 +2569,7 @@
 .groups-featured {
     min-height: 310px;
     padding: 27px;
-    border: 1px solid #dfe6d6;
+    border: 2px solid #dfe6d6;
     border-radius: 11px;
     background: linear-gradient(155deg, #f1f5e9, #f9f8f1);
 }
