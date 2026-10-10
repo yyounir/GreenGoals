@@ -29,14 +29,14 @@ function completeChallenge(req, res) {
     }
 
   
-    const user = users.find(user => user.id === userId);                                              // Find the user
+    const user = users.find(user => user.id === userId);                                                // Find the user
 
     if (!user) {
         return res.status(404).json({message: "User not found"});
     }
 
   
-    if (!Array.isArray(user.completedChallenges)) {user.completedChallenges = [];}                    // Make sure the user has a completedChallenges array
+    if (!Array.isArray(user.completedChallenges)) {user.completedChallenges = [];}                      // Make sure the user has a completedChallenges array
 
  
     if (user.completedChallenges.includes(challengeId)) {
@@ -44,11 +44,11 @@ function completeChallenge(req, res) {
     }
 
  
-    user.completedChallenges.push(challengeId);                                                       // Record completion and award individual points
+    user.completedChallenges.push(challengeId);                                                         // Record completion and award individual points
     user.points = (user.points || 0) + challenge.points;
 
   
-    let group = null;                                                                                 // Find the user's group, if they belong to one
+    let group = null;                                                                                   // Find the user's group, if they belong to one
 
     if (user.groupId != null) {
         group = groups.find(group => group.id === user.groupId);
@@ -76,16 +76,11 @@ async function generateChallenges(req, res) {
     try {
         const { GoogleGenAI } = await import("@google/genai");
 
-        const ai = new GoogleGenAI({
-            apiKey: process.env.GEMINI_API_KEY
-        });
+        const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+
+        const categories = [ "Waste", "Water", "Transportation", "Nature", "Community Action"];         // Categories supported by Green Goals.
 
 
-        // Categories supported by Green Goals.
-        const categories = [ "Waste", "Water", "Transportation", "Nature", "Community Action"];
-
-
-        // Tell Gemini which challenge fields to generate.
         const prompt = `
             Generate exactly 5 original environmental challenges for Green Goals.
 
@@ -115,43 +110,58 @@ async function generateChallenges(req, res) {
             - Return exactly 5 challenges as structured JSON with the required fields.
         `;
 
-        const response = await ai.models.generateContent({
-            model: "gemini-3.8-flash",
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: "ARRAY",
-                    items: {
-                        type: "OBJECT",
-                        properties: {
-                            title: { type: "STRING" },
-                            description: { type: "STRING" },
-                            category: {
-                                type: "STRING",
-                                enum: categories
+
+        let response;
+
+        for (let attempt = 1; attempt <= 3; attempt++) {
+            try {
+                response = await ai.models.generateContent({
+                model: "gemini-3.8-flash",
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                title: { type: "STRING" },
+                                description: { type: "STRING" },
+                                category: {type: "STRING",enum: categories},
+                                points: { type: "INTEGER" }
                             },
-                            points: { type: "INTEGER" }
-                        },
-                        required: [
-                            "title",
-                            "description",
-                            "category",
-                            "points"
-                        ],
-                        propertyOrdering: [
-                            "title",
-                            "description",
-                            "category",
-                            "points"
-                        ]
+                            required: ["title","description","category","points"],
+                            propertyOrdering: ["title","description","category","points"]
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        // Convert Gemini's JSON text into JavaScript objects.
-        const generated = JSON.parse(response.text);
+            break;                                                                                      // Request succeeded, so stop retrying.
+
+            } catch (error) {
+                const status = Number(
+                    error.status ??
+                    error.code ??
+                    error.error?.code
+                );
+                const retryable = [429, 500, 502, 503, 504].includes(status);
+
+                if (!retryable || attempt === 3) {throw error;}
+
+                const delay = attempt * 2000;
+
+                console.log(`Gemini returned ${status}. Retrying in ${delay / 1000} seconds...`);
+
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+
+
+        if (!response) {throw new Error("Gemini did not return a response.");}
+
+
+        const generated = JSON.parse(response.text);                                                 // Convert Gemini's JSON text into JavaScript objects.
 
         // Validate the response before using it.
         if (
@@ -185,19 +195,15 @@ async function generateChallenges(req, res) {
             points: c.points
         }));
 
-        challenges.push(...newChallenges);                                      // Add the new challenges to the existing data list
+        challenges.push(...newChallenges);                                                           // Add the new challenges to the existing data list
 
-        // Return the challenges to the frontend.
-        res.status(200).json({
-            challenges: newChallenges
-        });
+       
+        res.status(200).json({challenges: newChallenges});                                           // Return the challenges to the frontend.
 
     } catch (error) {
-        console.error("Gemini generation error:", error.message);
+        console.error("Gemini generation error:", error);
 
-        res.status(500).json({
-            message: "Failed to generate challenges"
-        });
+        res.status(500).json({message: "Failed to generate challenges"});
     }
 }
 
