@@ -83,6 +83,47 @@ GreenGoals uses a simple but effective architecture:
 
 This design keeps the app responsive while preserving trust and integrity in the reward and leaderboard system.
 
+## 🧩 Standalone Express challenge backend (prototype)
+
+The repository also includes a separate Express challenge API in `backend/`. This prototype demonstrates retrieving predefined sustainability challenges, generating new challenges with Gemini, and awarding points when a sample user completes a challenge. It is separate from the Firebase Cloud Functions backend used by the React app; the prototype stores its data in memory and is not connected to the app's Firebase sign-in or Firestore data.
+
+### Backend files
+
+- `backend/server.js` loads environment variables, configures Express JSON parsing, mounts the challenge routes, and starts the API on port `3000`.
+- `backend/routes/challengeRoutes.js` maps HTTP requests to the challenge controller.
+- `backend/controllers/challengeController.js` retrieves challenges, generates and validates Gemini challenge data, and processes completions and points.
+- `backend/data/challenges.js` contains the predefined challenges and the generated challenges for the current server session.
+- `backend/data/users.js` and `backend/data/groups.js` contain sample records used by the completion and point-awarding logic.
+- `backend/package.json` defines the backend dependencies and `npm start` script. `backend/.gitignore` excludes local environment files and installed dependencies.
+
+### Challenge API
+
+Run the API from the backend directory with Node.js installed:
+
+```sh
+cd backend
+npm install
+npm start
+```
+
+Set `GEMINI_API_KEY` in `backend/.env` before requesting AI-generated challenges. Keep this key private and do not commit the `.env` file.
+
+With the server running at `http://localhost:3000`, the API provides:
+
+| Method | Endpoint | Behavior |
+| --- | --- | --- |
+| `GET` | `/api/challenges` | Returns the predefined and in-session generated challenges. |
+| `GET` | `/api/challenges/:id` | Returns a challenge by numeric ID, or a 404 response if it is not found. |
+| `POST` | `/api/challenges/generate` | Requests five structured environmental challenges from Gemini, validates them, and adds them to the in-memory challenge list. Retryable Gemini errors are retried up to three attempts. |
+| `POST` | `/api/challenges/:id/complete` | Checks the challenge and sample user, prevents duplicate completion, and awards points to the user and their sample group when applicable. Send a numeric `userId` in the JSON request body. |
+
+### Prototype limitations
+
+- Challenge, user, and group data are held in memory and reset when the Express server restarts.
+- The user and group records are placeholders for development and testing, not the app's production identity or group system.
+- Completion currently identifies a user using the request body's `userId`; it does not authenticate the caller. Do not expose this prototype as a production API without integrating the real authentication, persistence, and authorization systems.
+- The React app currently calls Firebase callable functions and uses Firestore for its authenticated flows. Changes to the standalone Express API do not automatically change those app flows.
+
 ## 🚀 Getting started
 
 ### Local development
